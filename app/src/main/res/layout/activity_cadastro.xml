@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bgColor"
+    android:background="@drawable/fundo_app"
     tools:context=".CadastroActivity">
 
     <EditText
@@ -62,20 +62,22 @@
         android:layout_marginTop="32dp"
         android:text="@string/insert"
         android:background="@drawable/bg_button_rounded"
-        android:textColor="@color/white"
+        android:textColor="#2035AC"
         app:layout_constraintEnd_toEndOf="@+id/edit_password"
         app:layout_constraintStart_toStartOf="@+id/edit_password"
+        android:fontFamily="@font/montserrat_extrabold"
         app:layout_constraintTop_toBottomOf="@+id/edit_password" />
 
-
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="219dp"
-        android:layout_height="115dp"
-        android:layout_marginTop="112dp"
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="128dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_enter"
-        app:srcCompat="@drawable/logo" />
+        app:srcCompat="@drawable/logov2" />
+
 
 </android.support.constraint.ConstraintLayout>

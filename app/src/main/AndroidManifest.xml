@@ -9,30 +9,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Prolink">
-
-        <activity
-            android:name=".CadastroActivity"
-            android:theme="@style/Theme.Prolink"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
-
-        <activity
-            android:name=".MainActivity"
-            android:theme="@style/Theme.Prolink"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
-
         <activity
             android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CadastroActivity"
+            android:exported="false"
             android:theme="@style/Theme.Prolink"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="true">
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Prolink"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".InicialActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Prolink"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Prolink">
         <activity
-            android:name=".LoginActivity"
+            android:name=".InicialActivity"
             android:exported="false" />
         <activity
             android:name=".CadastroActivity"
@@ -23,7 +23,7 @@
             android:theme="@style/Theme.Prolink"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".InicialActivity"
+            android:name=".LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.Prolink"
             android:windowSoftInputMode="adjustResize">

@@ -3,15 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Clemente/Prolink-Mobile-2.0/app/src/main/res/drawable/fundo_botao_1.xml" value="0.3828125" />
-        <entry key="..\:/Users/Clemente/Prolink-Mobile-2.0/app/src/main/res/layout/activity_login.xml" value="0.3473731884057971" />
-        <entry key="..\:/Users/Clemente/Prolink-Mobile-2.0/app/src/main/res/layout/activity_main.xml" value="0.3423913043478261" />
+        <entry key="..\:/Users/muril/AndroidStudioProjects/Prolink/app/src/main/res/drawable/bg_button_img_rounded.xml" value="0.18611111111111112" />
         <entry key="..\:/Users/muril/AndroidStudioProjects/Prolink/app/src/main/res/drawable/bg_button_rounded.xml" value="0.1935185185185185" />
         <entry key="..\:/Users/muril/AndroidStudioProjects/Prolink/app/src/main/res/drawable/bg_edittext_rounded.xml" value="0.1935185185185185" />
         <entry key="..\:/Users/muril/AndroidStudioProjects/Prolink/app/src/main/res/layout/activity_cadastro.xml" value="0.33" />
         <entry key="..\:/Users/muril/AndroidStudioProjects/Prolink/app/src/main/res/layout/activity_inicial.xml" value="0.33" />
         <entry key="..\:/Users/muril/AndroidStudioProjects/Prolink/app/src/main/res/layout/activity_login.xml" value="0.33" />
-        <entry key="..\:/Users/muril/AndroidStudioProjects/Prolink/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/muril/AndroidStudioProjects/Prolink/app/src/main/res/layout/activity_main.xml" value="0.25" />
       </map>
     </option>
   </component>

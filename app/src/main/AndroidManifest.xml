@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Prolink">
         <activity
+            android:name=".ContatosActivity"
+            android:exported="false" />
+        <activity
             android:name=".InicialActivity"
             android:exported="false" />
         <activity

@@ -5,16 +5,19 @@
       <map>
         <entry key="..\:/Users/Clemente/Prolink-Mobile-2.0/app/src/main/res/drawable/banner_fundo.xml" value="0.3828125" />
         <entry key="..\:/Users/Clemente/Prolink-Mobile-2.0/app/src/main/res/drawable/fundo_botao_1.xml" value="0.3828125" />
-        <entry key="..\:/Users/Clemente/Prolink-Mobile-2.0/app/src/main/res/drawable/lista_planodefundo_1.xml" value="0.3828125" />
         <entry key="..\:/Users/Clemente/Prolink-Mobile-2.0/app/src/main/res/layout/activity_login.xml" value="0.3473731884057971" />
         <entry key="..\:/Users/Clemente/Prolink-Mobile-2.0/app/src/main/res/layout/activity_main.xml" value="0.33" />
-        <entry key="..\:/Users/Clemente/Prolink-Mobile-2.0/app/src/main/res/layout/viewholder_lista.xml" value="0.2878787878787879" />
         <entry key="..\:/Users/muril/AndroidStudioProjects/Prolink/app/src/main/res/drawable/bg_button_rounded.xml" value="0.1935185185185185" />
         <entry key="..\:/Users/muril/AndroidStudioProjects/Prolink/app/src/main/res/drawable/bg_edittext_rounded.xml" value="0.1935185185185185" />
-        <entry key="..\:/Users/muril/AndroidStudioProjects/Prolink/app/src/main/res/layout/activity_cadastro.xml" value="0.33" />
+        <entry key="..\:/Users/muril/AndroidStudioProjects/Prolink/app/src/main/res/drawable/lista_planodefundo_1.xml" value="0.10648148148148148" />
+        <entry key="..\:/Users/muril/AndroidStudioProjects/Prolink/app/src/main/res/layout/activity_cadastro.xml" value="0.13414634146341464" />
+        <entry key="..\:/Users/muril/AndroidStudioProjects/Prolink/app/src/main/res/layout/activity_chat.xml" value="0.22448979591836735" />
+        <entry key="..\:/Users/muril/AndroidStudioProjects/Prolink/app/src/main/res/layout/activity_contatos.xml" value="0.3625" />
         <entry key="..\:/Users/muril/AndroidStudioProjects/Prolink/app/src/main/res/layout/activity_inicial.xml" value="0.33" />
         <entry key="..\:/Users/muril/AndroidStudioProjects/Prolink/app/src/main/res/layout/activity_login.xml" value="0.33" />
-        <entry key="..\:/Users/muril/AndroidStudioProjects/Prolink/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/muril/AndroidStudioProjects/Prolink/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Users/muril/AndroidStudioProjects/Prolink/app/src/main/res/layout/item_from_message.xml" value="0.18" />
+        <entry key="..\:/Users/muril/AndroidStudioProjects/Prolink/app/src/main/res/layout/item_to_message.xml" value="0.25" />
       </map>
     </option>
   </component>

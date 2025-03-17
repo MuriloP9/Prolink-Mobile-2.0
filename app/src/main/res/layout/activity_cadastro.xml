@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/fundo4"
-    tools:context=".CadastroActivity">
+    tools:context=".Activity.CadastroActivity">
 
     <EditText
         android:id="@+id/edit_username"

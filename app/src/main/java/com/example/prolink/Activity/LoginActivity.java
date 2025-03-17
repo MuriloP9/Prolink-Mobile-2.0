@@ -1,4 +1,4 @@
-package com.example.prolink;
+package com.example.prolink.Activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.example.prolink.R;
 
 public class LoginActivity extends AppCompatActivity {
 

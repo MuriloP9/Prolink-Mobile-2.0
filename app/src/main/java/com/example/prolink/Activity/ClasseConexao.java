@@ -28,7 +28,7 @@ public class ClasseConexao {
         }
 
         try{
-            String url = "jdbc:jtds:sqlserver:// 192.168.15.5:1433;databaseName=prolink";
+            String url = "jdbc:jtds:sqlserver://  192.168.15.1:1433;databaseName=prolink";
             con = DriverManager.getConnection(url, "sa", "etesp");
             stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             // Toast.makeText(ctx.getApplicationContext(), "conectado", Toast.LENGTH_SHORT).show();

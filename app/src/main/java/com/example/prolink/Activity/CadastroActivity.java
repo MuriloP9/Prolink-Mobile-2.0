@@ -18,16 +18,19 @@ public class CadastroActivity extends AppCompatActivity {
 
     private EditText editUsername, editEmail, editPassword;
     private Button btnEnter;
+    private ClasseConexao conexao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro);
 
+        // Inicialização dos componentes
         editUsername = findViewById(R.id.edit_username);
         editEmail = findViewById(R.id.edit_email);
         editPassword = findViewById(R.id.edit_password);
         btnEnter = findViewById(R.id.btn_enter);
+        conexao = new ClasseConexao(CadastroActivity.this);
 
         btnEnter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +50,16 @@ public class CadastroActivity extends AppCompatActivity {
             return;
         }
 
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(this, "Digite um email válido", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (senha.length() < 6) {
+            Toast.makeText(this, "A senha deve ter pelo menos 6 caracteres", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         new CadastroTask().execute(nome, email, senha);
     }
 
@@ -59,7 +72,11 @@ public class CadastroActivity extends AppCompatActivity {
             String email = params[1];
             String senha = params[2];
 
-            try (Connection conn = new ClasseConexao().entBanco(CadastroActivity.this)) {
+            Connection conn = null;
+            PreparedStatement ps = null;
+
+            try {
+                conn = conexao.getConnection();
                 if (conn == null) {
                     errorMessage = "Sem conexão com o banco de dados";
                     return false;
@@ -68,18 +85,20 @@ public class CadastroActivity extends AppCompatActivity {
                 String sql = "INSERT INTO Usuario (nome, email, senha, dataNascimento, telefone) " +
                         "VALUES (?, ?, ?, NULL, NULL)";
 
-                try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                    ps.setString(1, nome);
-                    ps.setString(2, email);
-                    ps.setString(3, senha);
+                ps = conn.prepareStatement(sql);
+                ps.setString(1, nome);
+                ps.setString(2, email);
+                ps.setString(3, senha);
 
-                    int rowsAffected = ps.executeUpdate();
-                    return rowsAffected > 0;
-                }
+                int rowsAffected = ps.executeUpdate();
+                return rowsAffected > 0;
+
             } catch (Exception e) {
                 errorMessage = e.getMessage();
-                e.printStackTrace();
                 return false;
+            } finally {
+                conexao.closeStatement(ps);
+                conexao.closeConnection(conn);
             }
         }
 
@@ -87,13 +106,21 @@ public class CadastroActivity extends AppCompatActivity {
         protected void onPostExecute(Boolean success) {
             if (success) {
                 Toast.makeText(CadastroActivity.this, "Cadastro realizado com sucesso!", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(CadastroActivity.this, LoginActivity.class));
+
+                // Passa os dados para a LoginActivity
+                Intent intent = new Intent(CadastroActivity.this, LoginActivity.class);
+                intent.putExtra("REGISTERED_EMAIL", editEmail.getText().toString());
+                startActivity(intent);
                 finish();
             } else {
-                String message = errorMessage.contains("UNIQUE") ?
-                        "Este email já está cadastrado" :
-                        "Erro ao cadastrar: " + errorMessage;
-
+                String message;
+                if (errorMessage.contains("UNIQUE")) {
+                    message = "Este email já está cadastrado";
+                } else if (errorMessage.contains("connection")) {
+                    message = "Erro de conexão com o servidor";
+                } else {
+                    message = "Erro ao cadastrar: " + errorMessage;
+                }
                 Toast.makeText(CadastroActivity.this, message, Toast.LENGTH_LONG).show();
             }
         }

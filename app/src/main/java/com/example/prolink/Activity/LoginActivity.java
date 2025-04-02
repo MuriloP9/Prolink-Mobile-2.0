@@ -36,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
         mEditPassword = findViewById(R.id.edit_password);
         mBtnEnter = findViewById(R.id.btn_enter);
         mTxtAccount = findViewById(R.id.txt_account);
-        conexao = new ClasseConexao();
+        conexao = new ClasseConexao(LoginActivity.this);
 
         // Listener do botão de login
         mBtnEnter.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +74,8 @@ public class LoginActivity extends AppCompatActivity {
                 try {
                     Connection conn = conexao.entBanco(LoginActivity.this);
                     if (conn != null) {
-                        String sql = "SELECT id_usuario FROM Usuario WHERE email = ? AND senha = ?";
+                        // Modifique a query para buscar também o nome do usuário
+                        String sql = "SELECT id_usuario, nome FROM Usuario WHERE email = ? AND senha = ?";
                         PreparedStatement ps = conn.prepareStatement(sql);
                         ps.setString(1, email);
                         ps.setString(2, senha);
@@ -86,9 +87,17 @@ public class LoginActivity extends AppCompatActivity {
                             public void run() {
                                 try {
                                     if (rs.next()) {
+                                        // Pegue o nome do usuário do ResultSet
+                                        String nomeUsuario = rs.getString("nome");
+                                        int idUsuario = rs.getInt("id_usuario");
+
                                         // Login bem-sucedido
-                                        Toast.makeText(LoginActivity.this, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(LoginActivity.this, "Bem-vindo, " + nomeUsuario + "!", Toast.LENGTH_SHORT).show();
+
+                                        // Passe os dados para a MainActivity
                                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                        intent.putExtra("NOME_USUARIO", nomeUsuario);
+                                        intent.putExtra("ID_USUARIO", idUsuario);
                                         startActivity(intent);
                                         finish();
                                     } else {

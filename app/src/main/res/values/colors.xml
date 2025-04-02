@@ -8,4 +8,14 @@
     <color name="black">#FF000000</color>
     <color name="bgColor">#091D88</color>
     <color name="white">#FFFFFF</color>
+        <!-- Cores básicas -->
+        <color name="colorPrimary">#3F51B5</color> <!-- Cor azul material -->
+        <color name="colorPrimaryDark">#303F9F</color>
+        <color name="colorAccent">#FF4081</color>
+
+        <!-- Cores para o chat -->
+        <color name="mensagem_enviada">#2196F3</color> <!-- Azul para mensagens enviadas -->
+        <color name="mensagem_recebida">#E0E0E0</color> <!-- Cinza para mensagens recebidas -->
+        <color name="texto_mensagem_enviada">#FFFFFF</color> <!-- Texto branco para enviadas -->
+        <color name="texto_mensagem_recebida">#000000</color> <!-- Texto preto para recebidas -->
 </resources>

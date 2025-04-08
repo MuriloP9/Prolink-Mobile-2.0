@@ -65,6 +65,15 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        TextView txtRecuperarSenha = findViewById(R.id.txt_recuperar_senha);
+        txtRecuperarSenha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, RecuperarSenha.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void autenticarUsuario(final String email, final String senha) {

@@ -44,7 +44,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             int idUsuario = extras.getInt("ID_USUARIO");
 
             // Atualizar a TextView com o nome do usuário
-            txtWelcome.setText("Olá, " + nomeUsuario);
+            if (nomeUsuario != null && !nomeUsuario.isEmpty()) {
+                String primeiroNome = nomeUsuario.split(" ")[0];
+                txtWelcome.setText("Olá, " + primeiroNome);
+            }
 
             // Salva o ID do usuário no SharedPreferences
             SharedPreferences prefs = getSharedPreferences("UsuarioPrefs", MODE_PRIVATE);

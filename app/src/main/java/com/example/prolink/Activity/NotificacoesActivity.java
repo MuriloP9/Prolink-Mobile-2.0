@@ -46,7 +46,8 @@ public class NotificacoesActivity extends AppCompatActivity implements Notificac
             try {
                 Connection conn = conexao.getConnection();
                 if (conn != null) {
-                    String query = "SELECT m.id_mensagem, m.id_usuario_remetente, u.nome, m.texto, m.data_hora " +
+                    String query = "SELECT m.id_mensagem, m.id_usuario_remetente, u.nome, " +
+                            "m.texto, m.data_hora, m.lida " + // Adicionado campo lida
                             "FROM Mensagem m " +
                             "JOIN Usuario u ON m.id_usuario_remetente = u.id_usuario " +
                             "WHERE m.id_usuario_destinatario = ? " +
@@ -64,7 +65,8 @@ public class NotificacoesActivity extends AppCompatActivity implements Notificac
                                 rs.getInt("id_usuario_remetente"),
                                 rs.getString("nome"),
                                 rs.getString("texto"),
-                                rs.getTimestamp("data_hora")
+                                rs.getTimestamp("data_hora"),
+                                rs.getBoolean("lida") // Novo campo
                         );
                         novasNotificacoes.add(notificacao);
                     }
@@ -81,28 +83,44 @@ public class NotificacoesActivity extends AppCompatActivity implements Notificac
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                runOnUiThread(() -> Toast.makeText(NotificacoesActivity.this,
-                        "Erro ao carregar notificações", Toast.LENGTH_SHORT).show());
             }
         }).start();
     }
 
     @Override
     public void onNotificacaoClick(Notificacao notificacao) {
-        // Logs para debug
-        Log.d("NotificacaoClick", "ID Remetente: " + notificacao.getIdRemetente());
-        Log.d("NotificacaoClick", "Nome Remetente: " + notificacao.getNomeRemetente());
+        // Atualiza no banco que a mensagem foi lida
+        marcarComoLida(notificacao.getIdMensagem());
 
-        // Abre o chat com o remetente
+        // Abre o chat normalmente
         Intent intent = new Intent(this, ChatActivity.class);
         intent.putExtra("ID_DESTINATARIO", notificacao.getIdRemetente());
         intent.putExtra("NOME_DESTINATARIO", notificacao.getNomeRemetente());
         startActivity(intent);
     }
 
+    private void marcarComoLida(int idMensagem) {
+        new Thread(() -> {
+            try {
+                Connection conn = conexao.getConnection();
+                if (conn != null) {
+                    String query = "UPDATE Mensagem SET lida = true WHERE id_mensagem = ?";
+                    PreparedStatement ps = conn.prepareStatement(query);
+                    ps.setInt(1, idMensagem);
+                    ps.executeUpdate();
+
+                    ps.close();
+                    conn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-        carregarNotificacoes(); // Atualiza as notificações ao retornar para a tela
+        carregarNotificacoes(); // Atualiza ao voltar para a tela
     }
 }

@@ -2,6 +2,7 @@ package com.example.prolink.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,6 +29,8 @@ public class ChatActivity extends AppCompatActivity {
     private List<Mensagem> mensagens = new ArrayList<>();
     private int idUsuarioLogado, idDestinatario;
     private ClasseConexao conexao;
+    private Handler handler = new Handler();
+    private Runnable atualizarMensagens;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,9 @@ public class ChatActivity extends AppCompatActivity {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             }
 
+            // Marca mensagens como lidas ao abrir o chat
+            marcarMensagensComoLidas(idDestinatario);
+
             // Carrega as mensagens
             carregarMensagens();
         } else {
@@ -69,6 +75,16 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         adapter = new MensagemAdapter(mensagens, idUsuarioLogado);
         recyclerView.setAdapter(adapter);
+
+        // Configura atualização periódica das mensagens
+        atualizarMensagens = new Runnable() {
+            @Override
+            public void run() {
+                carregarMensagens();
+                handler.postDelayed(this, 3000); // Atualiza a cada 3 segundos
+            }
+        };
+        handler.postDelayed(atualizarMensagens, 3000);
 
         // Listener do botão enviar
         btnEnviar.setOnClickListener(v -> enviarMensagem());
@@ -91,7 +107,7 @@ public class ChatActivity extends AppCompatActivity {
                     ps.setInt(4, idUsuarioLogado);
 
                     ResultSet rs = ps.executeQuery();
-                    List<Mensagem> novasMensagens = new ArrayList<>();
+                    final List<Mensagem> novasMensagens = new ArrayList<>();
 
                     while (rs.next()) {
                         Mensagem msg = new Mensagem(
@@ -99,7 +115,8 @@ public class ChatActivity extends AppCompatActivity {
                                 rs.getInt("id_usuario_remetente"),
                                 rs.getInt("id_usuario_destinatario"),
                                 rs.getString("texto"),
-                                rs.getTimestamp("data_hora")
+                                rs.getTimestamp("data_hora"),
+                                rs.getBoolean("lida") // Novo campo
                         );
                         novasMensagens.add(msg);
                     }
@@ -125,24 +142,93 @@ public class ChatActivity extends AppCompatActivity {
 
     private void enviarMensagem() {
         final String texto = editMensagem.getText().toString().trim();
-        if (texto.isEmpty()) return;
+        if (texto.isEmpty()) {
+            Toast.makeText(this, "Digite uma mensagem", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Adiciona visualmente antes de enviar ao banco (feedback imediato)
+        final Mensagem novaMensagem = new Mensagem(
+                0, // ID temporário
+                idUsuarioLogado,
+                idDestinatario,
+                texto,
+                new Timestamp(System.currentTimeMillis()),
+                true // Considera como lida para o remetente
+        );
+
+        runOnUiThread(() -> {
+            mensagens.add(novaMensagem);
+            adapter.notifyItemInserted(mensagens.size() - 1);
+            recyclerView.scrollToPosition(mensagens.size() - 1);
+            editMensagem.setText("");
+        });
 
         new Thread(() -> {
             try {
                 Connection conn = conexao.getConnection();
-                if (conn != null) {
-                    String query = "INSERT INTO Mensagem (id_usuario_remetente, id_usuario_destinatario, texto) VALUES (?, ?, ?)";
-                    PreparedStatement ps = conn.prepareStatement(query);
-                    ps.setInt(1, idUsuarioLogado);
-                    ps.setInt(2, idDestinatario);
-                    ps.setString(3, texto);
+                if (conn == null) {
+                    runOnUiThread(() ->
+                            Toast.makeText(ChatActivity.this, "Erro de conexão", Toast.LENGTH_SHORT).show());
+                    return;
+                }
 
+                String query = "INSERT INTO Mensagem (id_usuario_remetente, id_usuario_destinatario, texto, lida) VALUES (?, ?, ?, ?)";
+                PreparedStatement ps = conn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
+                ps.setInt(1, idUsuarioLogado);
+                ps.setInt(2, idDestinatario);
+                ps.setString(3, texto);
+                ps.setBoolean(4, false); // Para o destinatário será não lida
+
+                int affectedRows = ps.executeUpdate();
+
+                if (affectedRows == 0) {
+                    runOnUiThread(() -> {
+                        Toast.makeText(ChatActivity.this, "Falha ao enviar mensagem", Toast.LENGTH_SHORT).show();
+                        mensagens.remove(novaMensagem);
+                        adapter.notifyDataSetChanged();
+                    });
+                } else {
+                    // Atualiza o ID da mensagem no objeto
+                    try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                        if (generatedKeys.next()) {
+                            final int novoId = generatedKeys.getInt(1);
+                            runOnUiThread(() -> {
+                                novaMensagem.setId(novoId); // Usando o setter
+                                adapter.notifyDataSetChanged();
+                            });
+                        }
+                    }
+                }
+
+                ps.close();
+                conn.close();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                runOnUiThread(() -> {
+                    Toast.makeText(ChatActivity.this, "Erro: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    mensagens.remove(novaMensagem);
+                    adapter.notifyDataSetChanged();
+                });
+            }
+        }).start();
+    }
+
+    private void marcarMensagensComoLidas(int idRemetente) {
+        new Thread(() -> {
+            try {
+                Connection conn = conexao.getConnection();
+                if (conn != null) {
+                    String query = "UPDATE Mensagem SET lida = true " +
+                            "WHERE id_usuario_remetente = ? AND id_usuario_destinatario = ? AND lida = false";
+                    PreparedStatement ps = conn.prepareStatement(query);
+                    ps.setInt(1, idRemetente);
+                    ps.setInt(2, idUsuarioLogado);
                     ps.executeUpdate();
 
-                    runOnUiThread(() -> {
-                        editMensagem.setText("");
-                        carregarMensagens();
-                    });
+                    // Atualiza a lista de mensagens após marcar como lidas
+                    runOnUiThread(this::carregarMensagens);
 
                     ps.close();
                     conn.close();
@@ -151,6 +237,13 @@ public class ChatActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }).start();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Remove callbacks para evitar vazamentos de memória
+        handler.removeCallbacks(atualizarMensagens);
     }
 
     @Override

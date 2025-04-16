@@ -1,5 +1,6 @@
 package com.example.prolink.Activity;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -48,27 +49,38 @@ public class NotificacaoAdapter extends RecyclerView.Adapter<NotificacaoAdapter.
 
     class NotificacaoViewHolder extends RecyclerView.ViewHolder {
         TextView txtRemetente, txtMensagem, txtData;
+        View itemView;
 
         NotificacaoViewHolder(View itemView) {
             super(itemView);
+            this.itemView = itemView;
             txtRemetente = itemView.findViewById(R.id.txt_remetente);
             txtMensagem = itemView.findViewById(R.id.txt_mensagem);
             txtData = itemView.findViewById(R.id.txt_data);
-
-            itemView.setOnClickListener(v -> {
-                int position = getAdapterPosition();
-                if (position != RecyclerView.NO_POSITION) {
-                    listener.onNotificacaoClick(notificacoes.get(position));
-                }
-            });
         }
 
         void bind(Notificacao notificacao) {
+            // Destaca notificações não lidas
+            if (!notificacao.isLida()) {
+                itemView.setBackgroundColor(Color.parseColor("#E3F2FD")); // Azul claro
+            } else {
+                itemView.setBackgroundColor(Color.TRANSPARENT);
+            }
+
             txtRemetente.setText(notificacao.getNomeRemetente());
             txtMensagem.setText(notificacao.getTexto());
 
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
             txtData.setText(sdf.format(notificacao.getDataHora()));
+
+            itemView.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    // Marca como lida ao clicar
+                    notificacao.setLida(true);
+                    listener.onNotificacaoClick(notificacao);
+                }
+            });
         }
     }
 }

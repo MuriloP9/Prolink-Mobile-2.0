@@ -1,51 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:padding="16dp"
     android:background="?attr/selectableItemBackground">
 
-    <!-- Adicione um indicador visual para mensagens não lidas -->
+    <!-- Indicador de mensagem não lida (azul destacado) -->
     <View
         android:id="@+id/indicator_unread"
-        android:layout_width="4dp"
-        android:layout_height="match_parent"
-        android:layout_marginEnd="8dp"
-        android:background="#2196F3"
+        android:layout_width="6dp"
+        android:layout_height="24dp"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/unread_indicator_bg"
         android:visibility="gone"/>
 
+    <!-- Layout principal do conteúdo -->
     <LinearLayout
+        android:id="@+id/content_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_toEndOf="@id/indicator_unread"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/txt_remetente"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="16sp"/>
-
-        <TextView
-            android:id="@+id/txt_data"
+        <!-- Linha superior com remetente e data -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:gravity="end"/>
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txt_remetente"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="#212121"/>
+
+            <TextView
+                android:id="@+id/txt_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:gravity="end"
+                android:textColor="#757575"/>
+        </LinearLayout>
+
+        <!-- Corpo da mensagem -->
+        <TextView
+            android:id="@+id/txt_mensagem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textSize="14sp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textColor="#424242"/>
+
+        <!-- Contador de mensagens não lidas (opcional) -->
+        <TextView
+            android:id="@+id/badge_unread_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/badge_background"
+            android:textColor="@android:color/white"
+            android:textSize="10sp"
+            android:paddingHorizontal="4dp"
+            android:visibility="gone"/>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/txt_mensagem"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:maxLines="2"
-        android:ellipsize="end"/>
-
+    <!-- Divisor -->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="8dp"
+        android:layout_below="@id/content_layout"
         android:background="#EEEEEE"/>
-</LinearLayout>
+</RelativeLayout>

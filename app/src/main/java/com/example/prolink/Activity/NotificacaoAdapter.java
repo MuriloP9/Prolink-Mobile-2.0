@@ -48,7 +48,8 @@ public class NotificacaoAdapter extends RecyclerView.Adapter<NotificacaoAdapter.
     }
 
     class NotificacaoViewHolder extends RecyclerView.ViewHolder {
-        TextView txtRemetente, txtMensagem, txtData;
+        TextView txtRemetente, txtMensagem, txtData, badgeUnreadCount;
+        View indicatorUnread;
         View itemView;
 
         NotificacaoViewHolder(View itemView) {
@@ -57,27 +58,41 @@ public class NotificacaoAdapter extends RecyclerView.Adapter<NotificacaoAdapter.
             txtRemetente = itemView.findViewById(R.id.txt_remetente);
             txtMensagem = itemView.findViewById(R.id.txt_mensagem);
             txtData = itemView.findViewById(R.id.txt_data);
+            indicatorUnread = itemView.findViewById(R.id.indicator_unread);
+            badgeUnreadCount = itemView.findViewById(R.id.badge_unread_count);
         }
 
         void bind(Notificacao notificacao) {
-            // Destaca notificações não lidas
-            if (!notificacao.isLida()) {
-                itemView.setBackgroundColor(Color.parseColor("#E3F2FD")); // Azul claro
-            } else {
-                itemView.setBackgroundColor(Color.TRANSPARENT);
-            }
-
+            // Configura os elementos básicos
             txtRemetente.setText(notificacao.getNomeRemetente());
             txtMensagem.setText(notificacao.getTexto());
+            txtData.setText(notificacao.getDataFormatada());
 
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
-            txtData.setText(sdf.format(notificacao.getDataHora()));
+            // Destaca notificações não lidas
+            if (!notificacao.isLida() || notificacao.getUnreadCount() > 0) {
+                indicatorUnread.setVisibility(View.VISIBLE);
+                itemView.setBackgroundColor(Color.parseColor("#F5F5F5"));
+
+                if (notificacao.getUnreadCount() > 0) {
+                    badgeUnreadCount.setText(String.valueOf(notificacao.getUnreadCount()));
+                    badgeUnreadCount.setVisibility(View.VISIBLE);
+                } else {
+                    badgeUnreadCount.setVisibility(View.GONE);
+                }
+            } else {
+                indicatorUnread.setVisibility(View.GONE);
+                badgeUnreadCount.setVisibility(View.GONE);
+                itemView.setBackgroundColor(Color.TRANSPARENT);
+            }
 
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
-                    // Marca como lida ao clicar
-                    notificacao.setLida(true);
+                    // Atualiza visualmente imediatamente
+                    indicatorUnread.setVisibility(View.GONE);
+                    badgeUnreadCount.setVisibility(View.GONE);
+                    itemView.setBackgroundColor(Color.TRANSPARENT);
+
                     listener.onNotificacaoClick(notificacao);
                 }
             });

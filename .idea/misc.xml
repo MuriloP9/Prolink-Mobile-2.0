@@ -26,6 +26,8 @@
         <entry key="..\:/Users/muril/AndroidStudioProjects/Prolink/app/src/main/res/layout/item_mensagem_recebida.xml" value="0.1" />
         <entry key="..\:/Users/muril/AndroidStudioProjects/Prolink/app/src/main/res/layout/item_to_message.xml" value="0.25" />
         <entry key="..\:/Users/muril/AndroidStudioProjects/Prolink/app/src/main/res/layout/viewholder_lista.xml" value="0.20364583333333333" />
+        <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/drawable/badge_background.xml" value="0.1" />
+        <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/drawable/unread_indicator_bg.xml" value="0.1" />
         <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/layout/activity_cadastro.xml" value="0.4" />
         <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/layout/activity_main.xml" value="0.4" />
@@ -34,7 +36,13 @@
         <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/layout/activity_qrcode.xml" value="0.10400000000000001" />
         <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/layout/activity_qrcode2.xml" value="0.264" />
         <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/layout/activity_recuperar_senha.xml" value="0.4" />
-        <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/layout/item_notificacao.xml" value="0.1" />
+        <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/layout/item_contato.xml" value="0.25" />
+        <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/layout/item_from_message.xml" value="0.25" />
+        <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/layout/item_mensagem_enviada.xml" value="0.25" />
+        <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/layout/item_mensagem_recebida.xml" value="0.25" />
+        <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/layout/item_notificacao.xml" value="0.4" />
+        <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/layout/item_to_message.xml" value="0.25" />
+        <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/layout/viewholder_lista.xml" value="0.25" />
         <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.14375" />
       </map>
     </option>

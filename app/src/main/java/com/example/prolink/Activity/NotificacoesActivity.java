@@ -47,14 +47,17 @@ public class NotificacoesActivity extends AppCompatActivity implements Notificac
                 Connection conn = conexao.getConnection();
                 if (conn != null) {
                     String query = "SELECT m.id_mensagem, m.id_usuario_remetente, u.nome, " +
-                            "m.texto, m.data_hora, m.lida " + // Adicionado campo lida
+                            "m.texto, m.data_hora, m.lida, " +
+                            "(SELECT COUNT(*) FROM Mensagem WHERE id_usuario_remetente = m.id_usuario_remetente " +
+                            "AND id_usuario_destinatario = ? AND lida = false) AS unread_count " +
                             "FROM Mensagem m " +
                             "JOIN Usuario u ON m.id_usuario_remetente = u.id_usuario " +
                             "WHERE m.id_usuario_destinatario = ? " +
                             "ORDER BY m.data_hora DESC";
 
                     PreparedStatement ps = conn.prepareStatement(query);
-                    ps.setInt(1, idUsuarioLogado);
+                    ps.setInt(1, idUsuarioLogado); // Para o unread_count
+                    ps.setInt(2, idUsuarioLogado); // Para o WHERE principal
 
                     ResultSet rs = ps.executeQuery();
                     List<Notificacao> novasNotificacoes = new ArrayList<>();
@@ -66,7 +69,8 @@ public class NotificacoesActivity extends AppCompatActivity implements Notificac
                                 rs.getString("nome"),
                                 rs.getString("texto"),
                                 rs.getTimestamp("data_hora"),
-                                rs.getBoolean("lida") // Novo campo
+                                rs.getBoolean("lida"),
+                                rs.getInt("unread_count") // Novo campo
                         );
                         novasNotificacoes.add(notificacao);
                     }

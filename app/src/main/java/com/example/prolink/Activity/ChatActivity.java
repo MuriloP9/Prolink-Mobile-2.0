@@ -116,7 +116,7 @@ public class ChatActivity extends AppCompatActivity {
                                 rs.getInt("id_usuario_destinatario"),
                                 rs.getString("texto"),
                                 rs.getTimestamp("data_hora"),
-                                rs.getBoolean("lida") // Novo campo
+                                rs.getBoolean("lida")
                         );
                         novasMensagens.add(msg);
                     }
@@ -181,6 +181,7 @@ public class ChatActivity extends AppCompatActivity {
                 ps.setBoolean(4, false); // Para o destinatário será não lida
 
                 int affectedRows = ps.executeUpdate();
+                Log.d("Chat", "Mensagem enviada - linhas afetadas: " + affectedRows);
 
                 if (affectedRows == 0) {
                     runOnUiThread(() -> {
@@ -194,11 +195,16 @@ public class ChatActivity extends AppCompatActivity {
                         if (generatedKeys.next()) {
                             final int novoId = generatedKeys.getInt(1);
                             runOnUiThread(() -> {
-                                novaMensagem.setId(novoId); // Usando o setter
+                                novaMensagem.setId(novoId);
                                 adapter.notifyDataSetChanged();
                             });
                         }
                     }
+
+                    // Dispara broadcast para atualizar notificações
+                    Intent intent = new Intent("NOVA_MENSAGEM_RECEBIDA");
+                    sendBroadcast(intent);
+                    Log.d("Chat", "Broadcast de nova mensagem enviado");
                 }
 
                 ps.close();
@@ -225,7 +231,8 @@ public class ChatActivity extends AppCompatActivity {
                     PreparedStatement ps = conn.prepareStatement(query);
                     ps.setInt(1, idRemetente);
                     ps.setInt(2, idUsuarioLogado);
-                    ps.executeUpdate();
+                    int rowsAffected = ps.executeUpdate();
+                    Log.d("Chat", "Mensagens marcadas como lidas: " + rowsAffected);
 
                     // Atualiza a lista de mensagens após marcar como lidas
                     runOnUiThread(this::carregarMensagens);

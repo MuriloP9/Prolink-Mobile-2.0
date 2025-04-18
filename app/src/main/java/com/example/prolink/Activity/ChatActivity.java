@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -75,6 +76,34 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         adapter = new MensagemAdapter(mensagens, idUsuarioLogado);
         recyclerView.setAdapter(adapter);
+
+        // Configura o listener para ajustar o scroll quando o teclado aparece
+        recyclerView.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+            if (bottom < oldBottom) { // Teclado aparecendo
+                recyclerView.postDelayed(() -> {
+                    if (adapter.getItemCount() > 0) { // Usando adapter.getItemCount() em vez de mensagens.size()
+                        recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
+                    }
+                }, 100);
+            }
+        });
+
+
+        // Listener para focar no EditText
+        editMensagem.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus && adapter.getItemCount() > 0) {
+                recyclerView.postDelayed(() -> recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1), 100);
+            }
+        });
+
+        recyclerView.setItemAnimator(new DefaultItemAnimator() {
+            @Override
+            public boolean animateMove(RecyclerView.ViewHolder holder, int fromX, int fromY, int toX, int toY) {
+                // Desativa animações de movimento para evitar flickering
+                dispatchMoveFinished(holder);
+                return false;
+            }
+        });
 
         // Configura atualização periódica das mensagens
         atualizarMensagens = new Runnable() {

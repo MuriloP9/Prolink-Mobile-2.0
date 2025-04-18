@@ -12,6 +12,7 @@
         <color name="colorPrimary">#3F51B5</color> <!-- Cor azul material -->
         <color name="colorPrimaryDark">#303F9F</color>
         <color name="colorAccent">#FF4081</color>
+        <color name="light_blue">#4285F4</color> <!-- Cor azul clara (similar ao azul do Google) -->
 
         <!-- Cores para o chat -->
         <color name="mensagem_enviada">#2196F3</color> <!-- Azul para mensagens enviadas -->

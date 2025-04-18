@@ -1,18 +1,25 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="@drawable/fundo_main"
+    android:fitsSystemWindows="true">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_mensagens"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_layout"
+        android:paddingTop="?attr/actionBarSize"
+        android:clipToPadding="false"
+        android:paddingBottom="8dp"/>
 
     <LinearLayout
+        android:id="@+id/bottom_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:orientation="horizontal"
+        android:background="@android:color/transparent"
         android:padding="8dp">
 
         <EditText
@@ -20,13 +27,21 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Digite sua mensagem"/>
+            android:hint="Digite sua mensagem"
+            android:background="@drawable/bg_edittext_rounded"
+            android:padding="12dp"
+            android:textColor="#000000"
+            android:textColorHint="#80000000"/>
 
         <ImageButton
             android:id="@+id/btn_enviar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_send"/>
-
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_round_button_selector"
+            android:src="@drawable/ic_send"
+            android:contentDescription="Enviar mensagem"
+            android:elevation="2dp"
+            android:padding="12dp"
+            android:tint="@android:color/white"/>
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

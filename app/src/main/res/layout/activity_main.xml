@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/fundo_main"
     tools:context=".Activity.MainActivity">
 
     <ScrollView
@@ -24,12 +25,12 @@
 
                 <ImageView
                     android:id="@+id/imageView9"
-                    android:layout_width="99dp"
-                    android:layout_height="86dp"
+                    android:layout_width="97dp"
+                    android:layout_height="73dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0"
+                    app:layout_constraintVertical_bias="1.0"
                     app:srcCompat="@drawable/perfil" />
 
                 <TextView
@@ -37,7 +38,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -53,7 +54,7 @@
                 android:layout_marginStart="42dp"
                 android:layout_marginTop="10dp"
                 android:text="Oque você gostaria hoje?"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="26sp"
                 android:textStyle="bold" />
 
@@ -158,7 +159,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.315"
-                        app:srcCompat="@drawable/contato" />
+                        app:srcCompat="@drawable/contatos" />
 
                     <TextView
                         android:id="@+id/textView4"
@@ -190,7 +191,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.333"
-                        app:srcCompat="@drawable/sino" />
+                        app:srcCompat="@drawable/notificacoes" />
 
                     <TextView
                         android:id="@+id/textView10"

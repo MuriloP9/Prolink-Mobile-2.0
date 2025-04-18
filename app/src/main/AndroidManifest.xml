@@ -28,7 +28,7 @@
             android:exported="false" />
         <activity
             android:name=".Activity.ChatActivity"
-            android:exported="false" />
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".Activity.LoginActivity"
             android:exported="false" />

@@ -1,4 +1,4 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/mensagem_enviada"/> <!-- Usando a cor definida -->
+    <solid android:color="#636363"/> <!-- Usando a cor definida -->
     <corners android:radius="8dp"/>
 </shape>

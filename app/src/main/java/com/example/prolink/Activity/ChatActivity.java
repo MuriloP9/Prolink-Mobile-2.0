@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.prolink.R;
@@ -32,11 +34,29 @@ public class ChatActivity extends AppCompatActivity {
     private ClasseConexao conexao;
     private Handler handler = new Handler();
     private Runnable atualizarMensagens;
+    private ImageView fotoPerfilChat;
+    private TextView nomeContatoChat;
+    private ImageButton btnVoltar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
+
+        // Configura as views
+        recyclerView = findViewById(R.id.recycler_mensagens);
+        editMensagem = findViewById(R.id.edit_mensagem);
+        btnEnviar = findViewById(R.id.btn_enviar);
+        fotoPerfilChat = findViewById(R.id.foto_perfil_chat);
+        nomeContatoChat = findViewById(R.id.nome_contato_chat);
+        btnVoltar = findViewById(R.id.btn_voltar);
+
+        btnVoltar.setOnClickListener(v -> finish());
 
         // Obtém IDs dos usuários
         idUsuarioLogado = getSharedPreferences("UsuarioPrefs", MODE_PRIVATE).getInt("ID_USUARIO", 0);
@@ -49,9 +69,13 @@ public class ChatActivity extends AppCompatActivity {
             String nomeDestinatario = extras.getString("NOME_DESTINATARIO");
 
             // Configura a toolbar
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().setTitle(nomeDestinatario);
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            //if (getSupportActionBar() != null) {
+                //getSupportActionBar().setTitle(nomeDestinatario);
+                //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+           // }
+
+            if (nomeContatoChat != null) {
+                nomeContatoChat.setText(nomeDestinatario);
             }
 
             // Marca mensagens como lidas ao abrir o chat
@@ -65,10 +89,6 @@ public class ChatActivity extends AppCompatActivity {
             return;
         }
 
-        // Configura as views
-        recyclerView = findViewById(R.id.recycler_mensagens);
-        editMensagem = findViewById(R.id.edit_mensagem);
-        btnEnviar = findViewById(R.id.btn_enviar);
 
         // Configura o RecyclerView
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -76,6 +96,7 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         adapter = new MensagemAdapter(mensagens, idUsuarioLogado);
         recyclerView.setAdapter(adapter);
+
 
         // Configura o listener para ajustar o scroll quando o teclado aparece
         recyclerView.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {

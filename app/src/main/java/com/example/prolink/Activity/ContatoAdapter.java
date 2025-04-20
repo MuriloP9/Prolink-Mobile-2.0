@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.prolink.R;
@@ -66,11 +67,13 @@ public class ContatoAdapter extends RecyclerView.Adapter<ContatoAdapter.ContatoV
     // ViewHolder para os itens do contato
     static class ContatoViewHolder extends RecyclerView.ViewHolder {
         TextView nomeContato;
+        ImageView fotoPerfil;
         // Adicione outros views conforme necessário (ImageView para foto, etc.)
 
         ContatoViewHolder(@NonNull View itemView) {
             super(itemView);
             nomeContato = itemView.findViewById(R.id.nome_contato);
+            fotoPerfil = itemView.findViewById(R.id.foto_perfil);
             // Inicializar outros views aqui
         }
     }

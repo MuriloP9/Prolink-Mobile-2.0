@@ -20,6 +20,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView imgChat;
     private ImageView imgContatos;
     private ImageView imgNotificacoes;
+    private ImageView profileButton;
+    private ImageView settingsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         imgChat = findViewById(R.id.imageView14);
         imgContatos = findViewById(R.id.imageView12);
         imgNotificacoes = findViewById(R.id.imageView10);
+        profileButton = findViewById(R.id.profileButton);
+        settingsButton = findViewById(R.id.settingsButton);
 
         // Configura os listeners de clique
         imgQRCode.setOnClickListener(this);
@@ -80,6 +84,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent intent = new Intent(this, NotificacoesActivity.class);
             startActivity(intent);
         }
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void abrirUrlChat() {
@@ -111,4 +130,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         txtWelcome.setText("Olá, " + nomeUsuario);
         Toast.makeText(this, "Bem-vindo, " + nomeUsuario + "!", Toast.LENGTH_SHORT).show();
     }
+
 }

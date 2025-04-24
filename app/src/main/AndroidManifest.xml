@@ -30,7 +30,7 @@
             android:name=".Activity.QRCodeActivity"
             android:exported="false" />
         <activity
-            android:name=".Activity.InicialActivity"
+            android:name=".Activity.MainActivity"
             android:exported="false" />
         <activity
             android:name=".Activity.ChatActivity"
@@ -49,7 +49,7 @@
             android:theme="@style/Theme.Prolink"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".Activity.MainActivity"
+            android:name=".Activity.InicialActivity"
             android:exported="true"
             android:theme="@style/Theme.Prolink"
             android:windowSoftInputMode="adjustResize">

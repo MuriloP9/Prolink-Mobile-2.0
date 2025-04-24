@@ -84,21 +84,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent intent = new Intent(this, NotificacoesActivity.class);
             startActivity(intent);
         }
-        profileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        settingsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                startActivity(intent);
-            }
-        });
+        else if (v.getId() == profileButton.getId()){
+            Intent intent = new Intent(this, ProfileActivity.class);
+            startActivity(intent);
+        }
+        else if  (v.getId() == settingsButton.getId()){
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+        }
     }
 
     private void abrirUrlChat() {

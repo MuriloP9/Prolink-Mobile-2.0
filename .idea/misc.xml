@@ -3,15 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Prolink-Mobile-2.0/app/src/main/res/drawable/circle_background.xml" value="0.1" />
-        <entry key="..\:/Prolink-Mobile-2.0/app/src/main/res/drawable/colors.xml" value="0.2128205128205128" />
-        <entry key="..\:/Prolink-Mobile-2.0/app/src/main/res/drawable/fundo_perfil_gradiente.xml" value="0.19166666666666668" />
-        <entry key="..\:/Prolink-Mobile-2.0/app/src/main/res/drawable/onda_perfil.xml" value="0.19166666666666668" />
-        <entry key="..\:/Prolink-Mobile-2.0/app/src/main/res/drawable/perfil_placeholder.xml" value="0.19166666666666668" />
-        <entry key="..\:/Prolink-Mobile-2.0/app/src/main/res/drawable/retangulo_arrendondado.xml" value="0.19166666666666668" />
         <entry key="..\:/Prolink-Mobile-2.0/app/src/main/res/drawable/rounded_bottom_menu.xml" value="0.3828125" />
         <entry key="..\:/Prolink-Mobile-2.0/app/src/main/res/layout/activity_main.xml" value="0.33" />
-        <entry key="..\:/Prolink-Mobile-2.0/app/src/main/res/layout/activity_profile.xml" value="0.22" />
         <entry key="..\:/Prolink-Mobile-2.0/app/src/main/res/layout/activity_settings.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Clemente/Prolink-Mobile-2.0/app/src/main/res/drawable/banner_fundo.xml" value="0.3828125" />
         <entry key="..\:/Users/Clemente/Prolink-Mobile-2.0/app/src/main/res/drawable/fundo_botao_1.xml" value="0.3828125" />
@@ -47,6 +40,7 @@
         <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/drawable/ic_perfil_padrao.xml" value="0.1" />
         <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/drawable/ic_send.xml" value="0.1375" />
+        <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/drawable/retangulo_arrendondado.xml" value="0.1" />
         <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/drawable/rounded_bottom_menu.xml" value="0.1" />
         <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/drawable/unread_indicator_bg.xml" value="0.1" />
         <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/layout/activity_cadastro.xml" value="0.4" />

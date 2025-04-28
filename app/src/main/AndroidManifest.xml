@@ -17,7 +17,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Prolink">
         <activity
+            android:name=".Activity.PrivacyPolicyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.AboutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.ChangePasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.EditProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activity.SettingsActivity"
+            android:theme="@style/Theme.AppCompat.Light"
             android:exported="false" />
         <activity
             android:name=".Activity.ProfileActivity"

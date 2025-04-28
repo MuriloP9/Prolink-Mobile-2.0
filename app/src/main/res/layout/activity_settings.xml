@@ -12,14 +12,6 @@
         android:orientation="vertical"
         android:paddingTop="180dp">
 
-        <!-- Cabeçalho com onda (fake) -->
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="157dp"
-            android:layout_marginTop="-180dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/onda_perfil" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -53,7 +45,7 @@
                 android:layout_height="48dp"
                 android:text="Editar Perfil"
                 android:textSize="16sp"
-                android:background="@drawable/bg_button_settings_modern"
+                android:background="@drawable/bg_button_settings"
                 android:textColor="#2E3440"
                 android:drawableStart="@drawable/ic_edit"
                 android:drawablePadding="16dp"
@@ -66,7 +58,7 @@
                 android:text="Alterar Senha"
                 android:textSize="16sp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_button_settings_modern"
+                android:background="@drawable/bg_button_settings"
                 android:textColor="#2E3440"
                 android:drawableStart="@drawable/ic_lock"
                 android:drawablePadding="16dp"
@@ -88,7 +80,7 @@
                 android:layout_height="48dp"
                 android:text="Sobre o Aplicativo"
                 android:textSize="16sp"
-                android:background="@drawable/bg_button_settings_modern"
+                android:background="@drawable/bg_button_settings"
                 android:textColor="#2E3440"
                 android:drawableStart="@drawable/ic_info"
                 android:drawablePadding="16dp"
@@ -101,7 +93,7 @@
                 android:text="Política de Privacidade"
                 android:textSize="16sp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_button_settings_modern"
+                android:background="@drawable/bg_button_settings"
                 android:textColor="#2E3440"
                 android:drawableStart="@drawable/ic_privacy"
                 android:drawablePadding="16dp"
@@ -114,7 +106,7 @@
                 android:text="Sair"
                 android:textColor="#BF616A"
                 android:layout_marginTop="24dp"
-                android:background="@drawable/bg_button_logout_modern"
+                android:background="@drawable/bg_button_logout"
                 android:drawableStart="@drawable/ic_logout"
                 android:drawablePadding="16dp"
                 android:drawableTint="#BF616A"/>

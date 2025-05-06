@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <color name="colorPrimary">#5E81AC</color>
-    <color name="colorSecondary">#81A1C1</color>
-    <color name="colorTertiary">#88C0D0</color>
-    <color name="textDark">#2E3440</color>
-    <color name="textMedium">#4C566A</color>
-    <color name="lightBackground">#ECEFF4</color>
+    <color android:name="colorPrimary">#5E81AC</color>
+    <color android:name="colorSecondary">#81A1C1</color>
+    <color android:name="colorTertiary">#88C0D0</color>
+    <color android:name="textDark">#2E3440</color>
+    <color android:name="textMedium">#4C566A</color>
+    <color android:name="lightBackground">#ECEFF4</color>
 </selector>

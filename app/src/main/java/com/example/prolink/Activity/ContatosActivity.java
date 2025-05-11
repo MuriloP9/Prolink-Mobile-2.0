@@ -32,21 +32,21 @@ public class ContatosActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contatos);
 
-        // Inicializa as views
+
         recyclerView = findViewById(R.id.recycler_contatos);
         tvSemContatos = findViewById(R.id.tv_sem_contatos);
         fabAdicionarContato = findViewById(R.id.fab_adicionar_contato);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Configura o adaptador com o listener de clique
+
         adapter = new ContatoAdapter(contatos, usuario -> abrirChat(usuario));
         recyclerView.setAdapter(adapter);
 
-        // Inicializa a conexão com o banco
+
         conexao = new ClasseConexao(this);
 
-        // Configura o FloatingActionButton para adicionar contatos
+
         fabAdicionarContato.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,25 +55,25 @@ public class ContatosActivity extends AppCompatActivity {
             }
         });
 
-        // Carrega os contatos
+
         carregarContatos();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // Recarrega a lista de contatos ao voltar para esta tela
+
         carregarContatos();
     }
 
     private void carregarContatos() {
         new Thread(() -> {
             try {
-                // Obtém o ID do usuário logado
+
                 SharedPreferences prefs = getSharedPreferences("UsuarioPrefs", MODE_PRIVATE);
                 int idUsuarioLogado = prefs.getInt("ID_USUARIO", 0);
 
-                // Query para buscar apenas os contatos adicionados pelo usuário
+
                 String query = "SELECT u.id_usuario, u.nome, u.email, u.foto_perfil " +
                         "FROM Usuario u " +
                         "INNER JOIN Contatos c ON u.id_usuario = c.id_contato " +
@@ -138,6 +138,6 @@ public class ContatosActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // Limpeza de recursos se necessário
+
     }
 }

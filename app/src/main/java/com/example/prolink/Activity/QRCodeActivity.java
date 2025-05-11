@@ -30,8 +30,5 @@ public class QRCodeActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-        // Aqui você pode implementar a lógica de escanear QR Code
-        // ou manter a implementação existente
     }
 }

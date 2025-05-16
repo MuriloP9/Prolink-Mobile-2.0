@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else if (id == R.id.settingsButton) {
             openSettingsActivity();
         } else if (id == R.id.imageView11) {
-            startActivity(new Intent(this, QRCodeActivity.class));
+            startActivity(new Intent(this, AddContactLinkActivity.class));
         } else if (id == R.id.imageView14) {
             openChatUrl();
         } else if (id == R.id.imageView12) {

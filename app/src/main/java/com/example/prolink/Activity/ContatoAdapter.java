@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,14 +20,23 @@ public class ContatoAdapter extends RecyclerView.Adapter<ContatoAdapter.ContatoV
 
     private List<Usuario> contatos;
     private ContatoClickListener clickListener;
+    private ContatoRemoveListener removeListener;
 
     public interface ContatoClickListener {
         void onContatoClick(Usuario usuario);
     }
 
+    public interface ContatoRemoveListener {
+        void onContatoRemove(Usuario usuario, int position);
+    }
+
     public ContatoAdapter(List<Usuario> contatos, ContatoClickListener clickListener) {
         this.contatos = contatos;
         this.clickListener = clickListener;
+    }
+
+    public void setRemoveListener(ContatoRemoveListener removeListener) {
+        this.removeListener = removeListener;
     }
 
     @NonNull
@@ -72,6 +82,21 @@ public class ContatoAdapter extends RecyclerView.Adapter<ContatoAdapter.ContatoV
                 clickListener.onContatoClick(usuario);
             }
         });
+
+        // Configurar clique no botão de remover
+        holder.btnRemover.setOnClickListener(v -> {
+            if (removeListener != null) {
+                removeListener.onContatoRemove(usuario, position);
+            }
+        });
+    }
+
+    public void removerContato(int position) {
+        if (position >= 0 && position < contatos.size()) {
+            contatos.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, contatos.size());
+        }
     }
 
     @Override
@@ -105,12 +130,14 @@ public class ContatoAdapter extends RecyclerView.Adapter<ContatoAdapter.ContatoV
         ImageView imgFotoPerfil;
         TextView tvNome;
         TextView tvEmail;
+        ImageButton btnRemover;
 
         ContatoViewHolder(View itemView) {
             super(itemView);
             imgFotoPerfil = itemView.findViewById(R.id.img_foto_perfil);
             tvNome = itemView.findViewById(R.id.tv_nome_contato);
             tvEmail = itemView.findViewById(R.id.tv_email_contato);
+            btnRemover = itemView.findViewById(R.id.btn_remover_contato);
         }
     }
 }

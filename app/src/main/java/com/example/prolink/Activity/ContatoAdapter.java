@@ -1,7 +1,10 @@
 package com.example.prolink.Activity;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,24 +16,22 @@ import com.example.prolink.R;
 import java.util.List;
 
 public class ContatoAdapter extends RecyclerView.Adapter<ContatoAdapter.ContatoViewHolder> {
-    private List<Usuario> contatos;
-    private OnContatoClickListener listener;
 
-    // Interface para o clique no contato
-    public interface OnContatoClickListener {
+    private List<Usuario> contatos;
+    private ContatoClickListener clickListener;
+
+    public interface ContatoClickListener {
         void onContatoClick(Usuario usuario);
     }
 
-    // Construtor
-    public ContatoAdapter(List<Usuario> contatos, OnContatoClickListener listener) {
+    public ContatoAdapter(List<Usuario> contatos, ContatoClickListener clickListener) {
         this.contatos = contatos;
-        this.listener = listener;
+        this.clickListener = clickListener;
     }
 
     @NonNull
     @Override
     public ContatoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Inflar o layout do item do contato
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_contato, parent, false);
         return new ContatoViewHolder(view);
@@ -38,49 +39,78 @@ public class ContatoAdapter extends RecyclerView.Adapter<ContatoAdapter.ContatoV
 
     @Override
     public void onBindViewHolder(@NonNull ContatoViewHolder holder, int position) {
-        Usuario contato = contatos.get(position);
+        Usuario usuario = contatos.get(position);
+        holder.tvNome.setText(usuario.getNome());
+        holder.tvEmail.setText(usuario.getEmail());
 
-        // Configurar os dados do contato
-        holder.nomeContato.setText(contato.getNome());
-
-        // Adicionar foto do perfil (se disponível)
-        if (contato.getFotoPerfil() != null) {
-            // Implementar carregamento da imagem (Glide/Picasso)
+        // Definir foto de perfil
+        if (usuario.getFotoPerfil() != null) {
+            try {
+                byte[] imageBytes = android.util.Base64.decode(usuario.getFotoPerfil(), android.util.Base64.DEFAULT);
+                if (imageBytes != null && imageBytes.length > 0) {
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                    if (bitmap != null) {
+                        Bitmap circularBitmap = getCircularBitmap(bitmap);
+                        holder.imgFotoPerfil.setImageBitmap(circularBitmap);
+                    } else {
+                        holder.imgFotoPerfil.setImageResource(R.drawable.perfil);
+                    }
+                } else {
+                    holder.imgFotoPerfil.setImageResource(R.drawable.perfil);
+                }
+            } catch (Exception e) {
+                Log.e("IMAGE_ERROR", "Erro ao processar imagem: " + e.getMessage());
+                holder.imgFotoPerfil.setImageResource(R.drawable.perfil);
+            }
+        } else {
+            holder.imgFotoPerfil.setImageResource(R.drawable.perfil);
         }
 
-        // Configurar o clique no item
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.onContatoClick(contato);
-                }
+        // Configurar clique no item
+        holder.itemView.setOnClickListener(v -> {
+            if (clickListener != null) {
+                clickListener.onContatoClick(usuario);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return contatos != null ? contatos.size() : 0;
+        return contatos.size();
     }
 
-    // ViewHolder para os itens do contato
+    // Método para criar bitmap circular
+    private Bitmap getCircularBitmap(Bitmap bitmap) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+
+        android.graphics.Canvas canvas = new android.graphics.Canvas(output);
+        final int color = 0xff424242;
+        final android.graphics.Paint paint = new android.graphics.Paint();
+        final android.graphics.Rect rect = new android.graphics.Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
+                bitmap.getWidth() / 2, paint);
+
+        paint.setXfermode(new android.graphics.PorterDuffXfermode(android.graphics.PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+
+        return output;
+    }
+
     static class ContatoViewHolder extends RecyclerView.ViewHolder {
-        TextView nomeContato;
-        ImageView fotoPerfil;
-        // Adicione outros views conforme necessário (ImageView para foto, etc.)
+        ImageView imgFotoPerfil;
+        TextView tvNome;
+        TextView tvEmail;
 
-        ContatoViewHolder(@NonNull View itemView) {
+        ContatoViewHolder(View itemView) {
             super(itemView);
-            nomeContato = itemView.findViewById(R.id.nome_contato);
-            fotoPerfil = itemView.findViewById(R.id.foto_perfil);
-            // Inicializar outros views aqui
+            imgFotoPerfil = itemView.findViewById(R.id.img_foto_perfil);
+            tvNome = itemView.findViewById(R.id.tv_nome_contato);
+            tvEmail = itemView.findViewById(R.id.tv_email_contato);
         }
-    }
-
-    // Método para atualizar a lista de contatos
-    public void atualizarContatos(List<Usuario> novosContatos) {
-        this.contatos = novosContatos;
-        notifyDataSetChanged();
     }
 }

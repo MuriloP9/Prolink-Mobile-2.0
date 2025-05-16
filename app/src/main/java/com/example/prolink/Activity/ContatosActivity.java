@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,21 +33,22 @@ public class ContatosActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contatos);
 
-
+        // Inicializar views
         recyclerView = findViewById(R.id.recycler_contatos);
         tvSemContatos = findViewById(R.id.tv_sem_contatos);
         fabAdicionarContato = findViewById(R.id.fab_adicionar_contato);
 
+        // Configurar RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
+        // Inicializar adapter
         adapter = new ContatoAdapter(contatos, usuario -> abrirChat(usuario));
         recyclerView.setAdapter(adapter);
 
-
+        // Inicializar conexão com o banco de dados
         conexao = new ClasseConexao(this);
 
-
+        // Configurar botão de adicionar contato
         fabAdicionarContato.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,25 +57,25 @@ public class ContatosActivity extends AppCompatActivity {
             }
         });
 
-
+        // Carregar contatos
         carregarContatos();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
+        // Recarregar contatos ao retornar para a activity
         carregarContatos();
     }
 
     private void carregarContatos() {
         new Thread(() -> {
             try {
-
+                // Obter ID do usuário logado
                 SharedPreferences prefs = getSharedPreferences("UsuarioPrefs", MODE_PRIVATE);
                 int idUsuarioLogado = prefs.getInt("ID_USUARIO", 0);
 
-
+                // Consulta SQL para obter contatos com foto de perfil
                 String query = "SELECT u.id_usuario, u.nome, u.email, u.foto_perfil " +
                         "FROM Usuario u " +
                         "INNER JOIN Contatos c ON u.id_usuario = c.id_contato " +
@@ -90,12 +92,18 @@ public class ContatosActivity extends AppCompatActivity {
 
                     // Processa os resultados
                     while (rs.next()) {
-                        Usuario usuario = new Usuario(
-                                rs.getInt("id_usuario"),
-                                rs.getString("nome"),
-                                rs.getString("email"),
-                                rs.getString("foto_perfil")
-                        );
+                        int id = rs.getInt("id_usuario");
+                        String nome = rs.getString("nome");
+                        String email = rs.getString("email");
+
+                        // Processar a foto de perfil
+                        String fotoPerfilBase64 = null;
+                        byte[] fotoPerfilBytes = rs.getBytes("foto_perfil");
+                        if (fotoPerfilBytes != null && fotoPerfilBytes.length > 0) {
+                            fotoPerfilBase64 = Base64.encodeToString(fotoPerfilBytes, Base64.DEFAULT);
+                        }
+
+                        Usuario usuario = new Usuario(id, nome, email, fotoPerfilBase64);
                         novosContatos.add(usuario);
                     }
 
@@ -138,6 +146,6 @@ public class ContatosActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        // Liberar recursos se necessário
     }
 }

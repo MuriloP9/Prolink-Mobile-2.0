@@ -1,24 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
     android:padding="16dp"
-    android:gravity="center_vertical">
+    android:background="?android:attr/selectableItemBackground">
 
     <ImageView
-        android:id="@+id/foto_perfil"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/ic_perfil_padrao"
-        android:contentDescription="Foto do perfil"
-        android:layout_marginEnd="16dp"/>
+        android:id="@+id/img_foto_perfil"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/rounded_image"
+        android:padding="2dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <TextView
-        android:id="@+id/nome_contato"
-        android:layout_width="wrap_content"
+        android:id="@+id/tv_nome_contato"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:textSize="16sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:maxLines="1"
+        android:ellipsize="end"
+        app:layout_constraintStart_toEndOf="@id/img_foto_perfil"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/img_foto_perfil"/>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/tv_email_contato"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:textSize="14sp"
+        android:textColor="#757575"
+        android:maxLines="1"
+        android:ellipsize="end"
+        app:layout_constraintStart_toEndOf="@id/img_foto_perfil"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_nome_contato"
+        app:layout_constraintBottom_toBottomOf="@id/img_foto_perfil"/>
+
+</android.support.constraint.ConstraintLayout>

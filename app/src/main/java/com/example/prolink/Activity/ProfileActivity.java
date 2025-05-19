@@ -2,8 +2,17 @@ package com.example.prolink.Activity;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
@@ -57,6 +66,42 @@ public class ProfileActivity extends AppCompatActivity {
             Toast.makeText(this, "Erro ao carregar perfil", Toast.LENGTH_SHORT).show();
             finish();
         }
+    }
+
+    // Método para criar um bitmap circular a partir de um bitmap quadrado
+    private Bitmap getCircularBitmap(Bitmap bitmap) {
+        if (bitmap == null) return null;
+
+        final Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        final Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2,
+                bitmap.getWidth() / 2, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+
+        return output;
+    }
+
+    // Alternativa usando RoundedBitmapDrawable
+    private void setCircularImage(ImageView imageView, Bitmap bitmap) {
+        if (bitmap == null) {
+            imageView.setImageResource(R.drawable.ic_default_profile);
+            return;
+        }
+
+        RoundedBitmapDrawable roundedBitmapDrawable =
+                RoundedBitmapDrawableFactory.create(getResources(), bitmap);
+        roundedBitmapDrawable.setCircular(true);
+        imageView.setImageDrawable(roundedBitmapDrawable);
     }
 
     private class LoadProfileTask extends AsyncTask<Integer, Void, ProfileData> {
@@ -137,7 +182,8 @@ public class ProfileActivity extends AppCompatActivity {
                 tvSkills.setText("Habilidades: " + profileData.skills);
 
                 if (profileData.profileImage != null) {
-                    imgProfile.setImageBitmap(profileData.profileImage);
+                    // Usar o método para criar uma imagem circular
+                    setCircularImage(imgProfile, profileData.profileImage);
                 } else {
                     imgProfile.setImageResource(R.drawable.ic_default_profile);
                 }

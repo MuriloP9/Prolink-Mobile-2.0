@@ -1,8 +1,14 @@
 package com.example.prolink.Activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -68,15 +74,12 @@ public class ChatActivity extends AppCompatActivity {
             idDestinatario = extras.getInt("ID_DESTINATARIO");
             String nomeDestinatario = extras.getString("NOME_DESTINATARIO");
 
-            // Configura a toolbar
-            //if (getSupportActionBar() != null) {
-                //getSupportActionBar().setTitle(nomeDestinatario);
-                //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-           // }
-
             if (nomeContatoChat != null) {
                 nomeContatoChat.setText(nomeDestinatario);
             }
+
+            // Carrega a foto de perfil do destinatário
+            carregarFotoPerfil(idDestinatario);
 
             // Marca mensagens como lidas ao abrir o chat
             marcarMensagensComoLidas(idDestinatario);
@@ -138,6 +141,97 @@ public class ChatActivity extends AppCompatActivity {
 
         // Listener do botão enviar
         btnEnviar.setOnClickListener(v -> enviarMensagem());
+    }
+
+    /**
+     * Carrega a foto de perfil do usuário a partir do banco de dados
+     * @param idUsuario ID do usuário cuja foto será carregada
+     */
+    private void carregarFotoPerfil(int idUsuario) {
+        new Thread(() -> {
+            try {
+                Connection conn = conexao.getConnection();
+                if (conn != null) {
+                    String query = "SELECT foto_perfil FROM Usuario WHERE id_usuario = ?";
+                    PreparedStatement ps = conn.prepareStatement(query);
+                    ps.setInt(1, idUsuario);
+                    ResultSet rs = ps.executeQuery();
+
+                    if (rs.next()) {
+                        byte[] fotoPerfil = rs.getBytes("foto_perfil");
+                        if (fotoPerfil != null && fotoPerfil.length > 0) {
+                            // Converte o array de bytes em um bitmap
+                            final Bitmap bitmap = BitmapFactory.decodeByteArray(fotoPerfil, 0, fotoPerfil.length);
+
+                            if (bitmap != null) {
+                                runOnUiThread(() -> {
+                                    // Cria um drawable circular a partir do bitmap
+                                    RoundedBitmapDrawable roundedDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
+                                    roundedDrawable.setCircular(true);
+                                    roundedDrawable.setAntiAlias(true);
+                                    fotoPerfilChat.setImageDrawable(roundedDrawable);
+                                });
+                            } else {
+                                // Se falhar ao converter, use a imagem padrão
+                                carregarImagemPadrao();
+                            }
+                        } else {
+                            // Se não houver foto no banco, use a imagem padrão
+                            carregarImagemPadrao();
+                        }
+                    } else {
+                        // Se não encontrar o usuário, use a imagem padrão
+                        carregarImagemPadrao();
+                    }
+
+                    rs.close();
+                    ps.close();
+                    conn.close();
+                } else {
+                    // Se não conseguir conexão com o banco, use a imagem padrão
+                    carregarImagemPadrao();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                // Em caso de erro, use a imagem padrão
+                carregarImagemPadrao();
+            }
+        }).start();
+    }
+
+    /**
+     * Carrega a imagem padrão como uma imagem circular
+     */
+    private void carregarImagemPadrao() {
+        runOnUiThread(() -> {
+            try {
+                // Carrega o drawable padrão e converte para bitmap
+                Drawable drawable = getResources().getDrawable(R.drawable.ic_perfil_padrao);
+                Bitmap bitmap;
+
+                if (drawable instanceof BitmapDrawable) {
+                    bitmap = ((BitmapDrawable) drawable).getBitmap();
+                } else {
+                    // Se não for BitmapDrawable, cria um novo bitmap e desenha o drawable nele
+                    bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
+                            drawable.getIntrinsicHeight(),
+                            Bitmap.Config.ARGB_8888);
+                    android.graphics.Canvas canvas = new android.graphics.Canvas(bitmap);
+                    drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+                    drawable.draw(canvas);
+                }
+
+                // Cria um drawable circular a partir do bitmap
+                RoundedBitmapDrawable roundedDrawable = RoundedBitmapDrawableFactory.create(getResources(), bitmap);
+                roundedDrawable.setCircular(true);
+                roundedDrawable.setAntiAlias(true);
+                fotoPerfilChat.setImageDrawable(roundedDrawable);
+            } catch (Exception e) {
+                e.printStackTrace();
+                // Se tudo falhar, pelo menos tenta mostrar o ícone original
+                fotoPerfilChat.setImageResource(R.drawable.ic_perfil_padrao);
+            }
+        });
     }
 
     private void carregarMensagens() {

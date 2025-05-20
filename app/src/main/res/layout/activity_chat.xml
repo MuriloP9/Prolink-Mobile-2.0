@@ -28,11 +28,11 @@
 
         <ImageView
             android:id="@+id/foto_perfil_chat"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_marginEnd="16dp"
             android:contentDescription="Foto do perfil"
-            android:src="@drawable/ic_perfil_padrao" />
+            android:src="@drawable/rounded_image" />
 
         <TextView
             android:id="@+id/nome_contato_chat"

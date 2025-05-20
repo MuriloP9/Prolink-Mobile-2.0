@@ -20,7 +20,7 @@ public class NotificacaoAdapter extends RecyclerView.Adapter<NotificacaoAdapter.
     private OnNotificacaoClickListener listener;
 
     public interface OnNotificacaoClickListener {
-        void onNotificacaoClick(Notificacao notificacao);
+        void onNotificacaoClick(Notificacao notificacao, boolean verificarBloqueio);
     }
 
     public NotificacaoAdapter(List<Notificacao> notificacoes, OnNotificacaoClickListener listener) {
@@ -93,9 +93,18 @@ public class NotificacaoAdapter extends RecyclerView.Adapter<NotificacaoAdapter.
                     badgeUnreadCount.setVisibility(View.GONE);
                     itemView.setBackgroundColor(Color.TRANSPARENT);
 
-                    listener.onNotificacaoClick(notificacao);
+                    // Chama o listener com flag para verificar bloqueio
+                    listener.onNotificacaoClick(notificacao, true);
                 }
             });
+        }
+    }
+
+    public void marcarComoLida(int position) {
+        if (position >= 0 && position < notificacoes.size()) {
+            notificacoes.get(position).setLida(true);
+            notificacoes.get(position).setUnreadCount(0);
+            notifyItemChanged(position);
         }
     }
 }

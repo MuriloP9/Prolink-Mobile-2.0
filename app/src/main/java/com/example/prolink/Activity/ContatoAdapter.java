@@ -21,6 +21,7 @@ public class ContatoAdapter extends RecyclerView.Adapter<ContatoAdapter.ContatoV
     private List<Usuario> contatos;
     private ContatoClickListener clickListener;
     private ContatoRemoveListener removeListener;
+    private ContatoBloqueioListener bloqueioListener;
 
     public interface ContatoClickListener {
         void onContatoClick(Usuario usuario);
@@ -30,6 +31,10 @@ public class ContatoAdapter extends RecyclerView.Adapter<ContatoAdapter.ContatoV
         void onContatoRemove(Usuario usuario, int position);
     }
 
+    public interface ContatoBloqueioListener {
+        void onContatoBloqueio(Usuario usuario, int position, boolean bloquear);
+    }
+
     public ContatoAdapter(List<Usuario> contatos, ContatoClickListener clickListener) {
         this.contatos = contatos;
         this.clickListener = clickListener;
@@ -37,6 +42,10 @@ public class ContatoAdapter extends RecyclerView.Adapter<ContatoAdapter.ContatoV
 
     public void setRemoveListener(ContatoRemoveListener removeListener) {
         this.removeListener = removeListener;
+    }
+
+    public void setBloqueioListener(ContatoBloqueioListener bloqueioListener) {
+        this.bloqueioListener = bloqueioListener;
     }
 
     @NonNull
@@ -76,6 +85,15 @@ public class ContatoAdapter extends RecyclerView.Adapter<ContatoAdapter.ContatoV
             holder.imgFotoPerfil.setImageResource(R.drawable.perfil);
         }
 
+        // Configurar ícone do botão de bloqueio baseado no status atual
+        if (usuario.isBloqueado()) {
+            holder.btnBloquear.setImageResource(R.drawable.ic_unblock);
+            holder.btnBloquear.setContentDescription("Desbloquear contato");
+        } else {
+            holder.btnBloquear.setImageResource(R.drawable.ic_block);
+            holder.btnBloquear.setContentDescription("Bloquear contato");
+        }
+
         // Configurar clique no item
         holder.itemView.setOnClickListener(v -> {
             if (clickListener != null) {
@@ -89,6 +107,13 @@ public class ContatoAdapter extends RecyclerView.Adapter<ContatoAdapter.ContatoV
                 removeListener.onContatoRemove(usuario, position);
             }
         });
+
+        // Configurar clique no botão de bloquear/desbloquear
+        holder.btnBloquear.setOnClickListener(v -> {
+            if (bloqueioListener != null) {
+                bloqueioListener.onContatoBloqueio(usuario, position, !usuario.isBloqueado());
+            }
+        });
     }
 
     public void removerContato(int position) {
@@ -96,6 +121,13 @@ public class ContatoAdapter extends RecyclerView.Adapter<ContatoAdapter.ContatoV
             contatos.remove(position);
             notifyItemRemoved(position);
             notifyItemRangeChanged(position, contatos.size());
+        }
+    }
+
+    public void atualizarStatusBloqueio(int position, boolean bloqueado) {
+        if (position >= 0 && position < contatos.size()) {
+            contatos.get(position).setBloqueado(bloqueado);
+            notifyItemChanged(position);
         }
     }
 
@@ -131,6 +163,7 @@ public class ContatoAdapter extends RecyclerView.Adapter<ContatoAdapter.ContatoV
         TextView tvNome;
         TextView tvEmail;
         ImageButton btnRemover;
+        ImageButton btnBloquear;
 
         ContatoViewHolder(View itemView) {
             super(itemView);
@@ -138,6 +171,7 @@ public class ContatoAdapter extends RecyclerView.Adapter<ContatoAdapter.ContatoV
             tvNome = itemView.findViewById(R.id.tv_nome_contato);
             tvEmail = itemView.findViewById(R.id.tv_email_contato);
             btnRemover = itemView.findViewById(R.id.btn_remover_contato);
+            btnBloquear = itemView.findViewById(R.id.btn_bloquear_contato);
         }
     }
 }

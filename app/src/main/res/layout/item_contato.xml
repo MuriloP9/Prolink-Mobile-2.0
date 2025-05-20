@@ -28,7 +28,7 @@
         android:maxLines="1"
         android:ellipsize="end"
         app:layout_constraintStart_toEndOf="@id/img_foto_perfil"
-        app:layout_constraintEnd_toStartOf="@id/btn_remover_contato"
+        app:layout_constraintEnd_toStartOf="@id/btn_bloquear_contato"
         app:layout_constraintTop_toTopOf="@id/img_foto_perfil"/>
 
     <TextView
@@ -41,9 +41,21 @@
         android:maxLines="1"
         android:ellipsize="end"
         app:layout_constraintStart_toEndOf="@id/img_foto_perfil"
-        app:layout_constraintEnd_toStartOf="@id/btn_remover_contato"
+        app:layout_constraintEnd_toStartOf="@id/btn_bloquear_contato"
         app:layout_constraintTop_toBottomOf="@id/tv_nome_contato"
         app:layout_constraintBottom_toBottomOf="@id/img_foto_perfil"/>
+
+    <ImageButton
+        android:id="@+id/btn_bloquear_contato"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="8dp"
+        android:src="@drawable/ic_block"
+        android:contentDescription="Bloquear contato"
+        app:layout_constraintEnd_toStartOf="@id/btn_remover_contato"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <ImageButton
         android:id="@+id/btn_remover_contato"

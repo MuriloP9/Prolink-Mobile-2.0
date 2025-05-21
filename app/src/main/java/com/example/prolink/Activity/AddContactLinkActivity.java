@@ -21,8 +21,6 @@ public class AddContactLinkActivity extends AppCompatActivity {
 
     private EditText etCodigoContato;
     private Button btnAdicionar;
-    private Button btnEscanear;
-    private Button btnCodigo;
     private TextView tvResultado;
     private ClasseConexao conexao;
 
@@ -34,8 +32,6 @@ public class AddContactLinkActivity extends AppCompatActivity {
         // Inicializar componentes
         etCodigoContato = findViewById(R.id.et_codigo_contato);
         btnAdicionar = findViewById(R.id.btn_adicionar);
-        btnEscanear = findViewById(R.id.btn_escanear);
-        btnCodigo = findViewById(R.id.btn_codigo);
         tvResultado = findViewById(R.id.tv_resultado);
 
         conexao = new ClasseConexao(this);
@@ -51,16 +47,6 @@ public class AddContactLinkActivity extends AppCompatActivity {
                     Toast.makeText(AddContactLinkActivity.this,
                             "Digite o código do contato", Toast.LENGTH_SHORT).show();
                 }
-            }
-        });
-
-        // Botão para ir para a tela de escanear QR
-        btnEscanear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AddContactLinkActivity.this, QRCodeActivity.class);
-                startActivity(intent);
-                finish();
             }
         });
     }

@@ -76,6 +76,22 @@ public class ChatActivity extends AppCompatActivity {
 
             if (nomeContatoChat != null) {
                 nomeContatoChat.setText(nomeDestinatario);
+
+                // Adiciona o listener de clique para abrir o perfil do destinatário
+                nomeContatoChat.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        abrirPerfilDestinatario();
+                    }
+                });
+
+                // Também podemos adicionar um listener para a foto de perfil
+                fotoPerfilChat.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        abrirPerfilDestinatario();
+                    }
+                });
             }
 
             // Carrega a foto de perfil do destinatário
@@ -141,6 +157,15 @@ public class ChatActivity extends AppCompatActivity {
 
         // Listener do botão enviar
         btnEnviar.setOnClickListener(v -> enviarMensagem());
+    }
+
+    /**
+     * Abre a tela de perfil do destinatário
+     */
+    private void abrirPerfilDestinatario() {
+        Intent intent = new Intent(ChatActivity.this, ProfileActivity.class);
+        intent.putExtra("USER_ID", idDestinatario);
+        startActivity(intent);
     }
 
     /**

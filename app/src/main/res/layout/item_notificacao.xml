@@ -1,61 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
-    android:background="?android:attr/selectableItemBackground">
+    android:background="?android:attr/selectableItemBackground"
+    android:padding="16dp">
 
+    <!-- Indicador de não lido (círculo colorido) -->
     <View
         android:id="@+id/indicator_unread"
         android:layout_width="12dp"
         android:layout_height="12dp"
-        android:background="@drawable/circle_indicator"
-        android:layout_centerVertical="true"
         android:layout_alignParentStart="true"
-        android:visibility="gone"/>
+        android:layout_centerVertical="true"
+        android:background="@drawable/circle_indicator"
+        android:visibility="gone" />
 
-    <TextView
-        android:id="@+id/txt_remetente"
-        android:layout_width="wrap_content"
+    <!-- Layout que contém as informações do remetente e data -->
+    <LinearLayout
+        android:id="@+id/container_header"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textStyle="bold"
         android:layout_marginStart="16dp"
         android:layout_toEndOf="@id/indicator_unread"
-        android:layout_toStartOf="@id/txt_data"/>
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/txt_data"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="12sp"
-        android:textColor="#757575"
-        android:layout_alignParentEnd="true"/>
+        <!-- Nome do remetente -->
+        <TextView
+            android:id="@+id/txt_remetente"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="Nome do Remetente" />
 
+        <!-- Data/hora da mensagem -->
+        <TextView
+            android:id="@+id/txt_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="#757575"
+            android:textSize="12sp"
+            tools:text="12:34" />
+    </LinearLayout>
+
+    <!-- Texto da mensagem -->
     <TextView
         android:id="@+id/txt_mensagem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txt_remetente"
+        android:layout_below="@id/container_header"
         android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
         android:layout_toEndOf="@id/indicator_unread"
-        android:layout_toStartOf="@id/badge_unread_count"
+        android:ellipsize="end"
         android:maxLines="2"
-        android:ellipsize="end"/>
+        tools:text="Conteúdo da mensagem que pode ser longo e ter várias linhas" />
 
-    <TextView
-        android:id="@+id/badge_unread_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@id/txt_data"
-        android:background="@drawable/badge_circle"
-        android:gravity="center"
-        android:minWidth="24dp"
-        android:minHeight="24dp"
-        android:textColor="#FFFFFF"
-        android:textSize="12sp"
-        android:visibility="gone"/>
+    <!-- Linha divisória sutil para separar os itens -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_alignParentBottom="true"
+        android:background="#E0E0E0" />
 
 </RelativeLayout>

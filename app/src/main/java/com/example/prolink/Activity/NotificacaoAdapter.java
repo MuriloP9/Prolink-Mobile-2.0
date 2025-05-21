@@ -1,6 +1,5 @@
 package com.example.prolink.Activity;
 
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,97 +13,101 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
-public class NotificacaoAdapter extends RecyclerView.Adapter<NotificacaoAdapter.NotificacaoViewHolder> {
+public class NotificacaoAdapter extends RecyclerView.Adapter<NotificacaoAdapter.ViewHolder> {
 
     private List<Notificacao> notificacoes;
     private OnNotificacaoClickListener listener;
-
-    public interface OnNotificacaoClickListener {
-        void onNotificacaoClick(Notificacao notificacao, boolean verificarBloqueio);
-    }
+    private SimpleDateFormat timeFormat;
+    private SimpleDateFormat dateFormat;
+    private SimpleDateFormat fullDateFormat;
+    private long oneDayInMillis = 24 * 60 * 60 * 1000;
+    private long currentTime;
 
     public NotificacaoAdapter(List<Notificacao> notificacoes, OnNotificacaoClickListener listener) {
         this.notificacoes = notificacoes;
         this.listener = listener;
+        this.timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        this.dateFormat = new SimpleDateFormat("dd/MM/yy", Locale.getDefault());
+        this.fullDateFormat = new SimpleDateFormat("dd/MM/yy HH:mm", Locale.getDefault());
+        this.currentTime = System.currentTimeMillis();
     }
 
     @NonNull
     @Override
-    public NotificacaoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_notificacao, parent, false);
-        return new NotificacaoViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NotificacaoViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Notificacao notificacao = notificacoes.get(position);
-        holder.bind(notificacao);
+
+        // Configurar nome do remetente
+        holder.txtRemetente.setText(notificacao.getNomeRemetente());
+
+        // Formatar e exibir data/hora de acordo com a idade da mensagem
+        String formattedTime;
+        long messageTime = notificacao.getDataHora().getTime();
+        long timeDiff = currentTime - messageTime;
+
+        if (timeDiff < oneDayInMillis) {
+            // Hoje: mostrar apenas a hora
+            formattedTime = timeFormat.format(notificacao.getDataHora());
+        } else if (timeDiff < 7 * oneDayInMillis) {
+            // Menos de uma semana: mostrar data curta
+            formattedTime = dateFormat.format(notificacao.getDataHora());
+        } else {
+            // Mais antiga: mostrar data completa
+            formattedTime = fullDateFormat.format(notificacao.getDataHora());
+        }
+
+        holder.txtData.setText(formattedTime);
+
+        // Configurar texto da mensagem
+        holder.txtMensagem.setText(notificacao.getTexto());
+
+        // Configurar indicadores de não lido
+        if (!notificacao.isLida()) {
+            holder.indicatorUnread.setVisibility(View.VISIBLE);
+            // Opcional: destaque visual adicional
+            holder.txtMensagem.setTextColor(holder.txtMensagem.getContext().getResources().getColor(R.color.colorPrimaryDark));
+        } else {
+            holder.indicatorUnread.setVisibility(View.GONE);
+            // Texto normal para mensagens lidas
+            holder.txtMensagem.setTextColor(holder.txtMensagem.getContext().getResources().getColor(android.R.color.secondary_text_light));
+        }
+
+        // Configurar clique no item
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onNotificacaoClick(notificacao, true);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return notificacoes.size();
+        return notificacoes != null ? notificacoes.size() : 0;
     }
 
-    class NotificacaoViewHolder extends RecyclerView.ViewHolder {
-        TextView txtRemetente, txtMensagem, txtData, badgeUnreadCount;
+    public class ViewHolder extends RecyclerView.ViewHolder {
         View indicatorUnread;
-        View itemView;
+        TextView txtRemetente;
+        TextView txtData;
+        TextView txtMensagem;
 
-        NotificacaoViewHolder(View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
-            this.itemView = itemView;
-            txtRemetente = itemView.findViewById(R.id.txt_remetente);
-            txtMensagem = itemView.findViewById(R.id.txt_mensagem);
-            txtData = itemView.findViewById(R.id.txt_data);
             indicatorUnread = itemView.findViewById(R.id.indicator_unread);
-            badgeUnreadCount = itemView.findViewById(R.id.badge_unread_count);
-        }
-
-        void bind(Notificacao notificacao) {
-            // Configura os elementos básicos
-            txtRemetente.setText(notificacao.getNomeRemetente());
-            txtMensagem.setText(notificacao.getTexto());
-            txtData.setText(notificacao.getDataFormatada());
-
-            // Destaca notificações não lidas
-            if (!notificacao.isLida() || notificacao.getUnreadCount() > 0) {
-                indicatorUnread.setVisibility(View.VISIBLE);
-                itemView.setBackgroundColor(Color.parseColor("#F5F5F5"));
-
-                if (notificacao.getUnreadCount() > 0) {
-                    badgeUnreadCount.setText(String.valueOf(notificacao.getUnreadCount()));
-                    badgeUnreadCount.setVisibility(View.VISIBLE);
-                } else {
-                    badgeUnreadCount.setVisibility(View.GONE);
-                }
-            } else {
-                indicatorUnread.setVisibility(View.GONE);
-                badgeUnreadCount.setVisibility(View.GONE);
-                itemView.setBackgroundColor(Color.TRANSPARENT);
-            }
-
-            itemView.setOnClickListener(v -> {
-                int position = getAdapterPosition();
-                if (position != RecyclerView.NO_POSITION) {
-                    // Atualiza visualmente imediatamente
-                    indicatorUnread.setVisibility(View.GONE);
-                    badgeUnreadCount.setVisibility(View.GONE);
-                    itemView.setBackgroundColor(Color.TRANSPARENT);
-
-                    // Chama o listener com flag para verificar bloqueio
-                    listener.onNotificacaoClick(notificacao, true);
-                }
-            });
+            txtRemetente = itemView.findViewById(R.id.txt_remetente);
+            txtData = itemView.findViewById(R.id.txt_data);
+            txtMensagem = itemView.findViewById(R.id.txt_mensagem);
         }
     }
 
-    public void marcarComoLida(int position) {
-        if (position >= 0 && position < notificacoes.size()) {
-            notificacoes.get(position).setLida(true);
-            notificacoes.get(position).setUnreadCount(0);
-            notifyItemChanged(position);
-        }
+    public interface OnNotificacaoClickListener {
+        void onNotificacaoClick(Notificacao notificacao, boolean verificarBloqueio);
     }
 }

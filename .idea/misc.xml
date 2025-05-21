@@ -59,6 +59,7 @@
         <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/drawable/ic_lida.xml" value="0.1" />
         <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/drawable/ic_lock.xml" value="0.1" />
         <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/drawable/ic_logout.xml" value="0.1" />
+        <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/drawable/ic_notifications_none.xml" value="0.1" />
         <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/drawable/ic_perfil_padrao.xml" value="0.1" />
         <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/drawable/ic_person.xml" value="0.1" />
         <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/drawable/ic_privacy.xml" value="0.1" />
@@ -81,7 +82,7 @@
         <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/layout/activity_main.xml" value="0.3300970873786408" />
         <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/layout/activity_notificacoes.xml" value="0.264" />
-        <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/layout/activity_notificacoes2.xml" value="0.25" />
+        <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/layout/activity_notificacoes2.xml" value="0.34837799717912554" />
         <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/layout/activity_privacy_policy.xml" value="0.25" />
         <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/layout/activity_profile.xml" value="0.234375" />
         <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/layout/activity_qrcode.xml" value="0.10400000000000001" />
@@ -92,7 +93,7 @@
         <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/layout/item_from_message.xml" value="0.25" />
         <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/layout/item_mensagem_enviada.xml" value="0.25" />
         <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/layout/item_mensagem_recebida.xml" value="0.25" />
-        <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/layout/item_notificacao.xml" value="0.4" />
+        <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/layout/item_notificacao.xml" value="0.264" />
         <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/layout/item_to_message.xml" value="0.25" />
         <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/layout/viewholder_lista.xml" value="0.25" />
         <entry key="..\:/Users/muril/StudioProjects/Prolink-Mobile-2.0/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.14375" />

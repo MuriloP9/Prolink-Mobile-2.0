@@ -1,25 +1,26 @@
 package com.example.prolink.Activity;
 
-        import android.content.Intent;
-        import android.content.SharedPreferences;
-        import android.os.Bundle;
-        import android.support.v7.app.AppCompatActivity;
-        import android.support.v7.widget.LinearLayoutManager;
-        import android.support.v7.widget.RecyclerView;
-        import android.util.Log;
-        import android.view.View;
-        import android.widget.TextView;
-        import android.widget.Toast;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
-        import com.example.prolink.R;
+import com.example.prolink.R;
 
-        import java.sql.Connection;
-        import java.sql.PreparedStatement;
-        import java.sql.ResultSet;
-        import java.sql.SQLException;
-        import java.sql.Timestamp;
-        import java.util.ArrayList;
-        import java.util.List;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NotificacoesActivity extends AppCompatActivity implements NotificacaoAdapter.OnNotificacaoClickListener {
 
@@ -35,6 +36,14 @@ public class NotificacoesActivity extends AppCompatActivity implements Notificac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notificacoes2);
+
+        // Configurar a função do botão de voltar
+        ImageButton btnVoltar = findViewById(R.id.btn_voltar);
+        btnVoltar.setOnClickListener(v -> {
+            Intent intent = new Intent(NotificacoesActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish(); // Encerra a atividade atual
+        });
 
         // Obter ID do usuário logado
         SharedPreferences prefs = getSharedPreferences("UsuarioPrefs", MODE_PRIVATE);

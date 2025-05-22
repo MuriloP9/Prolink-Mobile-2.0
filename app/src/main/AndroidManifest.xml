@@ -17,6 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Prolink">
         <activity
+            android:name=".Activity.CadastroWeb"
+            android:exported="false" />
+        <activity
             android:name=".Activity.EscolhaAdd"
             android:exported="false" />
         <activity

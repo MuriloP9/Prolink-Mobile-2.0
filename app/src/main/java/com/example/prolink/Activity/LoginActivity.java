@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
         mTxtAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, CadastroActivity.class);
+                Intent intent = new Intent(LoginActivity.this, CadastroWeb.class);
                 startActivity(intent);
             }
         });

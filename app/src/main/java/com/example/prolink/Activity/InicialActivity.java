@@ -15,7 +15,7 @@ public class InicialActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicial);
 
-        Button btnRegister = findViewById(R.id.btnLogin);
+        Button btnRegister = findViewById(R.id.btnLink);
         Button btnLogin = findViewById(R.id.btnCad);
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -29,7 +29,7 @@ public class InicialActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(InicialActivity.this, CadastroActivity.class);
+                Intent intent = new Intent(InicialActivity.this, CadastroWeb.class);
                 startActivity(intent);
             }
         });

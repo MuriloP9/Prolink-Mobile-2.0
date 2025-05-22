@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.prolink.R;
+import com.example.prolink.Activity.CriptoUtils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -279,11 +280,24 @@ public class ChatActivity extends AppCompatActivity {
                     final List<Mensagem> novasMensagens = new ArrayList<>();
 
                     while (rs.next()) {
+                        String textoOriginal = rs.getString("texto");
+                        String textoDescriptografado;
+
+                        // Descriptografa a mensagem antes de exibir
+                        if (CriptoUtils.estaCriptografado(textoOriginal)) {
+                            textoDescriptografado = CriptoUtils.descriptografar(textoOriginal);
+                            Log.d("Chat", "Mensagem descriptografada: " + textoOriginal + " -> " + textoDescriptografado);
+                        } else {
+                            // Se não estiver criptografada (mensagens antigas), mantém original
+                            textoDescriptografado = textoOriginal;
+                            Log.d("Chat", "Mensagem não criptografada: " + textoOriginal);
+                        }
+
                         Mensagem msg = new Mensagem(
                                 rs.getInt("id_mensagem"),
                                 rs.getInt("id_usuario_remetente"),
                                 rs.getInt("id_usuario_destinatario"),
-                                rs.getString("texto"),
+                                textoDescriptografado, // Usa o texto descriptografado
                                 rs.getTimestamp("data_hora"),
                                 rs.getBoolean("lida")
                         );
@@ -317,11 +331,12 @@ public class ChatActivity extends AppCompatActivity {
         }
 
         // Adiciona visualmente antes de enviar ao banco (feedback imediato)
+        // Mostra a mensagem descriptografada na interface
         final Mensagem novaMensagem = new Mensagem(
                 0, // ID temporário
                 idUsuarioLogado,
                 idDestinatario,
-                texto,
+                texto, // Texto original para exibição
                 new Timestamp(System.currentTimeMillis()),
                 true // Considera como lida para o remetente
         );
@@ -342,11 +357,15 @@ public class ChatActivity extends AppCompatActivity {
                     return;
                 }
 
+                // Criptografa a mensagem antes de salvar no banco
+                String textoCriptografado = CriptoUtils.criptografar(texto);
+                Log.d("Chat", "Mensagem criptografada: " + texto + " -> " + textoCriptografado);
+
                 String query = "INSERT INTO Mensagem (id_usuario_remetente, id_usuario_destinatario, texto, lida) VALUES (?, ?, ?, ?)";
                 PreparedStatement ps = conn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
                 ps.setInt(1, idUsuarioLogado);
                 ps.setInt(2, idDestinatario);
-                ps.setString(3, texto);
+                ps.setString(3, textoCriptografado); // Salva o texto criptografado
                 ps.setBoolean(4, false); // Para o destinatário será não lida
 
                 int affectedRows = ps.executeUpdate();

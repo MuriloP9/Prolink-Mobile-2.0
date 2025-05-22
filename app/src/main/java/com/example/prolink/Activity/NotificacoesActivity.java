@@ -74,8 +74,6 @@ public class NotificacoesActivity extends AppCompatActivity implements Notificac
             Connection testConn = conexao.getConnection();
             if (testConn != null) {
                 Log.d(TAG, "Conexão com banco de dados estabelecida com sucesso");
-                // Verificar se o banco de dados tem a estrutura esperada
-                verificarEstruturaBancoDados(testConn);
                 testConn.close();
             } else {
                 Log.e(TAG, "Falha ao obter conexão com banco de dados");
@@ -83,44 +81,10 @@ public class NotificacoesActivity extends AppCompatActivity implements Notificac
             }
         } catch (Exception e) {
             Log.e(TAG, "Erro ao inicializar conexão: " + e.getMessage());
-            Toast.makeText(this, "Erro ao inicializar conexão: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
 
         // Carregar notificações
         carregarNotificacoes();
-    }
-
-    private void verificarEstruturaBancoDados(Connection conn) {
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-
-        try {
-            // Verificar se a tabela Mensagem tem as colunas esperadas
-            String query = "SELECT TOP 1 * FROM Mensagem";
-            pstmt = conn.prepareStatement(query);
-            rs = pstmt.executeQuery();
-
-            // Obter metadados das colunas
-            java.sql.ResultSetMetaData metaData = rs.getMetaData();
-            int columnCount = metaData.getColumnCount();
-
-            Log.d(TAG, "Estrutura da tabela Mensagem:");
-            for (int i = 1; i <= columnCount; i++) {
-                String columnName = metaData.getColumnName(i);
-                String columnType = metaData.getColumnTypeName(i);
-                Log.d(TAG, "Coluna " + i + ": " + columnName + " (" + columnType + ")");
-            }
-
-        } catch (SQLException e) {
-            Log.e(TAG, "Erro ao verificar estrutura do banco: " + e.getMessage());
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (pstmt != null) pstmt.close();
-            } catch (SQLException e) {
-                Log.e(TAG, "Erro ao fechar recursos: " + e.getMessage());
-            }
-        }
     }
 
     private void carregarNotificacoes() {
@@ -131,7 +95,6 @@ public class NotificacoesActivity extends AppCompatActivity implements Notificac
 
             try {
                 // Query para buscar notificações não lidas ou mais recentes
-                // Corrigido para usar os nomes de campo corretos: id_usuario_remetente e id_usuario_destinatario
                 String query = "SELECT m.id_mensagem, m.id_usuario_remetente AS id_remetente, u.nome, m.texto, m.data_hora, m.lida, " +
                         "(SELECT COUNT(*) FROM Mensagem WHERE id_usuario_remetente = m.id_usuario_remetente AND id_usuario_destinatario = ? AND lida = 0) AS unread_count " +
                         "FROM Mensagem m " +
@@ -154,17 +117,36 @@ public class NotificacoesActivity extends AppCompatActivity implements Notificac
                         int idMensagem = rs.getInt("id_mensagem");
                         int idRemetente = rs.getInt("id_remetente");
                         String nomeRemetente = rs.getString("nome");
-                        String texto = rs.getString("texto");
+                        String textoCriptografado = rs.getString("texto");
                         Timestamp dataHora = rs.getTimestamp("data_hora");
                         boolean lida = rs.getBoolean("lida");
                         int unreadCount = rs.getInt("unread_count");
 
+                        // USAR A MESMA LÓGICA DE DESCRIPTOGRAFIA DO CHATACTIVITY
+                        String textoDescriptografado;
+
+                        // Verifica se a mensagem está criptografada usando CriptoUtils
+                        if (CriptoUtils.estaCriptografado(textoCriptografado)) {
+                            textoDescriptografado = CriptoUtils.descriptografar(textoCriptografado);
+                            Log.d(TAG, "Mensagem descriptografada: " + textoCriptografado + " -> " + textoDescriptografado);
+                        } else {
+                            // Se não estiver criptografada (mensagens antigas), mantém original
+                            textoDescriptografado = textoCriptografado;
+                            Log.d(TAG, "Mensagem não criptografada: " + textoCriptografado);
+                        }
+
+                        // Se a descriptografia retornar null ou vazio, usar mensagem de fallback
+                        if (textoDescriptografado == null || textoDescriptografado.trim().isEmpty()) {
+                            textoDescriptografado = "Mensagem criptografada";
+                            Log.w(TAG, "Falha na descriptografia da mensagem ID: " + idMensagem);
+                        }
+
                         Notificacao notificacao = new Notificacao(
-                                idMensagem, idRemetente, nomeRemetente, texto, dataHora, lida, unreadCount);
+                                idMensagem, idRemetente, nomeRemetente, textoDescriptografado, dataHora, lida, unreadCount);
                         novasNotificacoes.add(notificacao);
                     }
 
-                    Log.d(TAG, "Notificações carregadas com sucesso: " + novasNotificacoes.size());
+                    Log.d(TAG, "Notificações carregadas e descriptografadas com sucesso: " + novasNotificacoes.size());
 
                     final List<Notificacao> finalNovasNotificacoes = novasNotificacoes;
                     runOnUiThread(() -> {

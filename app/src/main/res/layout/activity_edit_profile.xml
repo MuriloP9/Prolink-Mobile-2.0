@@ -1,9 +1,222 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.EditProfileActivity">
+    android:background="@drawable/fundo4"
+    android:fillViewport="true">
 
-</android.support.constraint.ConstraintLayout>
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        tools:context=".Activity.EditProfileActivity">
+
+        <!-- Foto de Perfil -->
+        <Button
+            android:id="@+id/btn_selected_photo"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_button_img_rounded"
+            android:fontFamily="@font/montserrat_extrabold"
+            android:text="Foto"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/img_profile"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:contentDescription="Foto do perfil"
+            android:scaleType="centerCrop"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@id/btn_selected_photo"
+            app:layout_constraintEnd_toEndOf="@id/btn_selected_photo"
+            app:layout_constraintStart_toStartOf="@id/btn_selected_photo"
+            app:layout_constraintTop_toTopOf="@id/btn_selected_photo" />
+
+        <!-- Dados Básicos -->
+        <EditText
+            android:id="@+id/edit_nome"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/bg_edittext_rounded"
+            android:ems="10"
+            android:hint="Nome"
+            android:inputType="textPersonName"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_selected_photo" />
+
+        <EditText
+            android:id="@+id/edit_telefone"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_edittext_rounded"
+            android:ems="10"
+            android:hint="Telefone"
+            android:inputType="phone"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_nome" />
+
+        <EditText
+            android:id="@+id/edit_data_nascimento"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_edittext_rounded"
+            android:ems="10"
+            android:hint="Data de Nascimento (AAAA-MM-DD)"
+            android:inputType="date"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_telefone" />
+
+        <EditText
+            android:id="@+id/edit_idade"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_edittext_rounded"
+            android:ems="10"
+            android:hint="Idade"
+            android:inputType="number"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_data_nascimento" />
+
+        <!-- Dados do Perfil -->
+        <EditText
+            android:id="@+id/edit_endereco"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_edittext_rounded"
+            android:ems="10"
+            android:hint="Endereço"
+            android:inputType="textPostalAddress"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_idade" />
+
+        <EditText
+            android:id="@+id/edit_formacao"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_edittext_rounded"
+            android:ems="10"
+            android:hint="Formação Acadêmica"
+            android:inputType="textMultiLine"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_endereco" />
+
+        <EditText
+            android:id="@+id/edit_experiencia"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_edittext_rounded"
+            android:ems="10"
+            android:gravity="top|start"
+            android:hint="Experiência Profissional"
+            android:inputType="textMultiLine"
+            android:maxLines="4"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_formacao" />
+
+        <EditText
+            android:id="@+id/edit_interesses"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_edittext_rounded"
+            android:ems="10"
+            android:gravity="top|start"
+            android:hint="Interesses"
+            android:inputType="textMultiLine"
+            android:maxLines="4"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_experiencia" />
+
+        <EditText
+            android:id="@+id/edit_projetos"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_edittext_rounded"
+            android:ems="10"
+            android:gravity="top|start"
+            android:hint="Projetos e Especializações"
+            android:inputType="textMultiLine"
+            android:maxLines="4"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_interesses" />
+
+        <EditText
+            android:id="@+id/edit_habilidades"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_edittext_rounded"
+            android:ems="10"
+            android:gravity="top|start"
+            android:hint="Habilidades"
+            android:inputType="textMultiLine"
+            android:maxLines="4"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_projetos" />
+
+        <!-- Botão Salvar -->
+        <Button
+            android:id="@+id/btn_salvar"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/bg_button_rounded"
+            android:fontFamily="@font/montserrat_extrabold"
+            android:text="Salvar Alterações"
+            android:textColor="#2035AC"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edit_habilidades" />
+
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

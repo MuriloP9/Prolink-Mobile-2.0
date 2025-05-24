@@ -63,19 +63,24 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void logoutUser() {
         try {
-            // Limpa as preferências do usuário
+            // Limpa a sessão do usuário usando o método da LoginActivity
+            LoginActivity.limparSessao(this);
+
+            // Limpa quaisquer outras preferências específicas desta activity
             SharedPreferences prefs = getSharedPreferences("UsuarioPrefs", MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
             editor.clear();
             editor.apply();
 
             // Redireciona para a tela de login
-            Intent intent = new Intent(this, InicialActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            Intent intent = new Intent(this, LoginActivity.class);  // Alterado para LoginActivity
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
+
+            Toast.makeText(this, "Logout realizado com sucesso", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
-            Toast.makeText(this, "Erro ao fazer logout", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Erro ao fazer logout: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 }

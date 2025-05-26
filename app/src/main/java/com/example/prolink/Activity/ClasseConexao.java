@@ -14,7 +14,7 @@ import java.sql.Statement;
 public class ClasseConexao {
     private static final String TAG = "ClasseConexao";
     private static final String DRIVER = "net.sourceforge.jtds.jdbc.Driver";
-    private static final String URL = "jdbc:jtds:sqlserver://192.168.15.6:1433/prolink01";
+    private static final String URL = "jdbc:jtds:sqlserver://192.168.15.3:1433/prolink01";
     private static final String USER = "sa";
     private static final String PASSWORD = "etesp";
 

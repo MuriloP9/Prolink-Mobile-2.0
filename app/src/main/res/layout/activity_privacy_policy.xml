@@ -231,9 +231,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_marginBottom="16dp"
-                android:background="@drawable/button_rounded_primary"
+                android:background="@drawable/bg_button_rounded"
                 android:text="Li e Concordo"
-                android:textColor="#FFFFFF"
+                android:textColor="#122CBD"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 

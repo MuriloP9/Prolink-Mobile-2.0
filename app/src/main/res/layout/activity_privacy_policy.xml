@@ -4,6 +4,250 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context=".Activity.PrivacyPolicyActivity">
+
+    <!-- Header com título -->
+    <LinearLayout
+        android:id="@+id/header_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#1B365D"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_arrow_back"
+            android:layout_marginEnd="16dp"
+            android:tint="#FFFFFF"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackgroundBorderless" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Política de Privacidade"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="center" />
+
+        <View
+            android:layout_width="24dp"
+            android:layout_height="24dp" />
+
+    </LinearLayout>
+
+    <!-- ScrollView para o conteúdo -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header_layout"
+        app:layout_constraintVertical_bias="1.0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <!-- Logo e nome do app -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ProLink"
+                    android:textColor="#1B365D"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <!-- Data de atualização -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:gravity="center"
+                android:text="Última atualização: Junho de 2025"
+                android:textColor="#666666"
+                android:textSize="14sp" />
+
+            <!-- Introdução -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:text="1. INTRODUÇÃO"
+                android:textColor="#1B365D"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:lineSpacingExtra="4dp"
+                android:text="O ProLink é uma plataforma dedicada ao networking profissional e busca de oportunidades de emprego. Esta Política de Privacidade descreve como coletamos, usamos e protegemos suas informações pessoais."
+                android:textColor="#333333"
+                android:textSize="16sp" />
+
+            <!-- Informações coletadas -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:text="2. INFORMAÇÕES QUE COLETAMOS"
+                android:textColor="#1B365D"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:lineSpacingExtra="4dp"
+                android:text="• Informações de perfil profissional (nome, cargo, empresa, experiências)\n• Dados de contato (e-mail, telefone)\n• Informações de localização (cidade, estado)\n• Dados de navegação e uso do aplicativo\n• Informações de candidaturas a vagas\n• Conexões e networking realizados na plataforma"
+                android:textColor="#333333"
+                android:textSize="16sp" />
+
+            <!-- Como usamos -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:text="3. COMO USAMOS SUAS INFORMAÇÕES"
+                android:textColor="#1B365D"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:lineSpacingExtra="4dp"
+                android:text="Utilizamos suas informações para:\n\n• Conectar você com outros profissionais\n• Recomendar vagas de emprego relevantes\n• Melhorar nossos serviços e funcionalidades\n• Enviar notificações sobre oportunidades\n• Facilitar o processo de candidatura\n• Personalizar sua experiência na plataforma"
+                android:textColor="#333333"
+                android:textSize="16sp" />
+
+            <!-- Compartilhamento -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:text="4. COMPARTILHAMENTO DE DADOS"
+                android:textColor="#1B365D"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:lineSpacingExtra="4dp"
+                android:text="Compartilhamos informações apenas quando:\n\n• Você autoriza expressamente\n• Com recrutadores de vagas que você se candidatou\n• Para cumprir obrigações legais\n• Com parceiros de confiança que nos ajudam a operar o serviço\n\nNunca vendemos seus dados pessoais para terceiros."
+                android:textColor="#333333"
+                android:textSize="16sp" />
+
+            <!-- Segurança -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:text="5. SEGURANÇA DOS DADOS"
+                android:textColor="#1B365D"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:lineSpacingExtra="4dp"
+                android:text="Implementamos medidas de segurança robustas incluindo:\n\n• Criptografia de dados sensíveis\n• Acesso restrito às informações\n• Monitoramento contínuo de segurança\n• Backups regulares e seguros\n• Conformidade com padrões internacionais"
+                android:textColor="#333333"
+                android:textSize="16sp" />
+
+            <!-- Seus direitos -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:text="6. SEUS DIREITOS"
+                android:textColor="#1B365D"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:lineSpacingExtra="4dp"
+                android:text="Você tem o direito de:\n\n• Acessar seus dados pessoais\n• Corrigir informações incorretas\n• Solicitar exclusão de dados\n• Portabilidade dos seus dados\n• Revogar consentimentos\n• Ser informado sobre vazamentos de dados"
+                android:textColor="#333333"
+                android:textSize="16sp" />
+
+            <!-- Contato -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:text="7. CONTATO"
+                android:textColor="#1B365D"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:lineSpacingExtra="4dp"
+                android:text="Para dúvidas sobre esta política ou exercer seus direitos, entre em contato:\n\nE-mail: prolink.web.contact@gmail.com\nTelefone: (11) 9999-9999\n\nEquipe de Proteção de Dados\nProLink Networking Solutions"
+                android:textColor="#333333"
+                android:textSize="16sp" />
+
+            <!-- Botão de aceite -->
+            <Button
+                android:id="@+id/btn_accept"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/button_rounded_primary"
+                android:text="Li e Concordo"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:gravity="center"
+                android:text="Ao continuar usando o ProLink, você concorda com esta Política de Privacidade."
+                android:textColor="#666666"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>

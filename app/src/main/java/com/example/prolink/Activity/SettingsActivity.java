@@ -72,8 +72,8 @@ public class SettingsActivity extends AppCompatActivity {
             editor.clear();
             editor.apply();
 
-            // Redireciona para a tela de login
-            Intent intent = new Intent(this, LoginActivity.class);  // Alterado para LoginActivity
+
+            Intent intent = new Intent(this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();

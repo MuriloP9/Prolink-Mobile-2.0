@@ -21,7 +21,7 @@ public class CadastroWeb extends AppCompatActivity {
         setContentView(R.layout.activity_cadastro_web);
 
         // Inicializar os componentes
-        btnLink = findViewById(R.id.btnLink);
+        btnLink = findViewById(R.id.btnLinkS);
         tvJaTenhoCadastro = findViewById(R.id.tvJaTenhoCadastro);
 
         // Configurar o clique do botão de cadastro

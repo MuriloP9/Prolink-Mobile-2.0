@@ -15,7 +15,7 @@ public class InicialActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicial);
 
-        Button btnRegister = findViewById(R.id.btnLink);
+        Button btnRegister = findViewById(R.id.btnLinkS);
         Button btnLogin = findViewById(R.id.btnCad);
 
         btnRegister.setOnClickListener(new View.OnClickListener() {

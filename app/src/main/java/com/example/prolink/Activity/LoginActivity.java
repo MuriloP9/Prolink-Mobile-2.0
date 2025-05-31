@@ -13,8 +13,8 @@ import android.widget.Toast;
 
 import com.example.prolink.R;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class LoginActivity extends AppCompatActivity {
@@ -97,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Connection conn = null;
-                PreparedStatement ps = null;
+                CallableStatement cs = null;
                 ResultSet rs = null;
 
                 try {
@@ -109,34 +109,50 @@ public class LoginActivity extends AppCompatActivity {
                         return;
                     }
 
-                    String sql = "SELECT id_usuario, nome, email FROM Usuario WHERE email = ? AND senha = ?";
-                    ps = conn.prepareStatement(sql);
-                    ps.setString(1, email);
-                    ps.setString(2, senha);
+                    // Chama a stored procedure sp_ValidarLogin
+                    String sql = "EXEC sp_ValidarLogin ?, ?";
+                    cs = conn.prepareCall(sql);
+                    cs.setString(1, email);
+                    cs.setString(2, senha);
 
-                    rs = ps.executeQuery();
+                    rs = cs.executeQuery();
 
                     if (rs.next()) {
-                        // Dados do usuário
-                        final String nomeUsuario = rs.getString("nome");
-                        final int idUsuario = rs.getInt("id_usuario");
-                        final String emailUsuario = rs.getString("email");
+                        // Verifica se o login foi bem-sucedido
+                        int sucesso = rs.getInt("sucesso");
+                        String mensagem = rs.getString("mensagem");
 
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Log.d(TAG, "Login bem-sucedido - ID: " + idUsuario + ", Nome: " + nomeUsuario);
-                                salvarSessaoUsuario(idUsuario, nomeUsuario, emailUsuario);
-                                Toast.makeText(LoginActivity.this, "Bem-vindo, " + nomeUsuario + "!", Toast.LENGTH_SHORT).show();
-                                irParaMainActivity(nomeUsuario, idUsuario, emailUsuario);
-                            }
-                        });
+                        if (sucesso == 1) {
+                            // Login bem-sucedido - obtém os dados do usuário
+                            final String nomeUsuario = rs.getString("nome");
+                            final int idUsuario = rs.getInt("id_usuario");
+                            final int idPerfil = rs.getInt("id_perfil");
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Log.d(TAG, "Login bem-sucedido - ID: " + idUsuario + ", Nome: " + nomeUsuario);
+                                    salvarSessaoUsuario(idUsuario, nomeUsuario, email, idPerfil);
+                                    Toast.makeText(LoginActivity.this, "Bem-vindo, " + nomeUsuario + "!", Toast.LENGTH_SHORT).show();
+                                    irParaMainActivity(nomeUsuario, idUsuario, email);
+                                }
+                            });
+                        } else {
+                            // Login falhou
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Log.w(TAG, "Login falhou para email: " + email + " - Motivo: " + mensagem);
+                                    Toast.makeText(LoginActivity.this, mensagem != null ? mensagem : "Email ou senha incorretos", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
                     } else {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Log.w(TAG, "Credenciais inválidas para email: " + email);
-                                Toast.makeText(LoginActivity.this, "Email ou senha incorretos", Toast.LENGTH_SHORT).show();
+                                Log.w(TAG, "Nenhum resultado retornado pela stored procedure");
+                                Toast.makeText(LoginActivity.this, "Erro ao verificar credenciais", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -145,13 +161,13 @@ public class LoginActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(LoginActivity.this, "Erro ao verificar credenciais", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Erro interno do servidor. Tente novamente mais tarde.", Toast.LENGTH_SHORT).show();
                         }
                     });
                 } finally {
                     try {
                         if (rs != null) rs.close();
-                        if (ps != null) ps.close();
+                        if (cs != null) cs.close();
                         if (conn != null) conn.close();
                     } catch (Exception e) {
                         Log.e(TAG, "Erro ao fechar recursos", e);
@@ -161,7 +177,7 @@ public class LoginActivity extends AppCompatActivity {
         }).start();
     }
 
-    private void salvarSessaoUsuario(int idUsuario, String nome, String email) {
+    private void salvarSessaoUsuario(int idUsuario, String nome, String email, int idPerfil) {
         SharedPreferences prefs = getSharedPreferences("user_session", MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
 
@@ -169,11 +185,12 @@ public class LoginActivity extends AppCompatActivity {
         editor.putString("nome", nome);
         editor.putString("email", email);
         editor.putString("usuario", email);
+        editor.putInt("id_perfil", idPerfil);
         editor.putLong("timestamp_login", System.currentTimeMillis());
 
         boolean saved = editor.commit();
 
-        Log.d(TAG, "Sessão salva: " + saved + " - ID: " + idUsuario + ", Nome: " + nome + ", Email: " + email);
+        Log.d(TAG, "Sessão salva: " + saved + " - ID: " + idUsuario + ", Nome: " + nome + ", Email: " + email + ", Perfil: " + idPerfil);
 
         // Debug
         int savedId = prefs.getInt("id_usuario", -1);

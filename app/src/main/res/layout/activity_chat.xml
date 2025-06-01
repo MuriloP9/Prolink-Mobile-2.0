@@ -1,10 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/fundo_chat3"
     android:fitsSystemWindows="true">
 
-    <!-- Adicione este cabeçalho -->
+    <!-- Cabeçalho do chat -->
     <LinearLayout
         android:id="@+id/header_chat"
         android:layout_width="match_parent"
@@ -24,7 +25,7 @@
             android:src="@drawable/ic_arrow_back"
             android:tint="@android:color/white"
             android:background="@null"
-        android:scaleType="centerInside"/>
+            android:scaleType="centerInside"/>
 
         <ImageView
             android:id="@+id/foto_perfil_chat"
@@ -36,24 +37,50 @@
 
         <TextView
             android:id="@+id/nome_contato_chat"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:textColor="@android:color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
 
     </LinearLayout>
 
+    <!-- Botão para adicionar contato (só aparece se não for contato ainda) -->
+    <TextView
+        android:id="@+id/btn_adicionar_contato"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/header_chat"
+        android:background="#FF4CAF50"
+        android:text="➕ Adicionar aos contatos"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:padding="12dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        android:elevation="2dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:drawableStart="@drawable/ic_add_contact"
+        android:drawablePadding="8dp"
+        android:foreground="?android:attr/selectableItemBackground" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_mensagens"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/header_chat"
+        android:layout_below="@id/btn_adicionar_contato"
         android:layout_above="@+id/bottom_layout"
         android:clipToPadding="false"
         android:paddingBottom="8dp"/>
 
-    <!-- O restante do seu layout permanece o mesmo -->
+    <!-- Layout inferior com campo de mensagem e botão enviar -->
     <LinearLayout
         android:id="@+id/bottom_layout"
         android:layout_width="match_parent"

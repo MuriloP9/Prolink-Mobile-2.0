@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +46,9 @@ public class ChatActivity extends AppCompatActivity {
     private ImageView fotoPerfilChat;
     private TextView nomeContatoChat;
     private ImageButton btnVoltar;
-
+    private LinearLayout headerChat;
+    private TextView btnAdicionarContato;
+    private boolean jaEContato = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,8 @@ public class ChatActivity extends AppCompatActivity {
         fotoPerfilChat = findViewById(R.id.foto_perfil_chat);
         nomeContatoChat = findViewById(R.id.nome_contato_chat);
         btnVoltar = findViewById(R.id.btn_voltar);
+        headerChat = findViewById(R.id.header_chat);
+        btnAdicionarContato = findViewById(R.id.btn_adicionar_contato);
 
         btnVoltar.setOnClickListener(v -> finish());
 
@@ -98,6 +104,9 @@ public class ChatActivity extends AppCompatActivity {
             // Carrega a foto de perfil do destinatário
             carregarFotoPerfil(idDestinatario);
 
+            // Verifica se já é contato e configura o botão de adicionar
+            verificarSeJaEContato();
+
             // Marca mensagens como lidas ao abrir o chat
             marcarMensagensComoLidas(idDestinatario);
 
@@ -109,7 +118,6 @@ public class ChatActivity extends AppCompatActivity {
             return;
         }
 
-
         // Configura o RecyclerView
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setStackFromEnd(true);
@@ -117,18 +125,16 @@ public class ChatActivity extends AppCompatActivity {
         adapter = new MensagemAdapter(mensagens, idUsuarioLogado);
         recyclerView.setAdapter(adapter);
 
-
         // Configura o listener para ajustar o scroll quando o teclado aparece
         recyclerView.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
             if (bottom < oldBottom) { // Teclado aparecendo
                 recyclerView.postDelayed(() -> {
-                    if (adapter.getItemCount() > 0) { // Usando adapter.getItemCount() em vez de mensagens.size()
+                    if (adapter.getItemCount() > 0) {
                         recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
                     }
                 }, 100);
             }
         });
-
 
         // Listener para focar no EditText
         editMensagem.setOnFocusChangeListener((v, hasFocus) -> {
@@ -158,21 +164,143 @@ public class ChatActivity extends AppCompatActivity {
 
         // Listener do botão enviar
         btnEnviar.setOnClickListener(v -> enviarMensagem());
+
+        // Listener do botão adicionar contato
+        btnAdicionarContato.setOnClickListener(v -> confirmarAdicaoContato());
     }
 
     /**
-     * Abre a tela de perfil do destinatário
+     * Verifica se o destinatário já é um contato do usuário logado
      */
+    private void verificarSeJaEContato() {
+        new Thread(() -> {
+            try {
+                Connection conn = conexao.getConnection();
+                if (conn != null) {
+                    String query = "SELECT COUNT(*) as total FROM Contatos WHERE id_usuario = ? AND id_contato = ?";
+                    PreparedStatement ps = conn.prepareStatement(query);
+                    ps.setInt(1, idUsuarioLogado);
+                    ps.setInt(2, idDestinatario);
+                    ResultSet rs = ps.executeQuery();
+
+                    if (rs.next()) {
+                        int total = rs.getInt("total");
+                        jaEContato = total > 0;
+                    }
+
+                    runOnUiThread(() -> {
+                        if (jaEContato) {
+                            btnAdicionarContato.setVisibility(View.GONE);
+                        } else {
+                            btnAdicionarContato.setVisibility(View.VISIBLE);
+                        }
+                    });
+
+                    rs.close();
+                    ps.close();
+                    conn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    /**
+     * Confirma se o usuário deseja adicionar o contato
+     */
+    private void confirmarAdicaoContato() {
+        String nomeDestinatario = nomeContatoChat.getText().toString();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Adicionar contato")
+                .setMessage("Deseja adicionar " + nomeDestinatario + " à sua lista de contatos?")
+                .setPositiveButton("Sim", (dialog, which) -> {
+                    adicionarContato();
+                })
+                .setNegativeButton("Não", (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .create()
+                .show();
+    }
+
+    /**
+     * Adiciona o destinatário como contato
+     */
+    private void adicionarContato() {
+        new Thread(() -> {
+            try {
+                Connection conn = conexao.getConnection();
+                if (conn != null) {
+                    // Verifica se já não é contato (dupla verificação)
+                    String queryVerifica = "SELECT COUNT(*) as total FROM Contatos WHERE id_usuario = ? AND id_contato = ?";
+                    PreparedStatement psVerifica = conn.prepareStatement(queryVerifica);
+                    psVerifica.setInt(1, idUsuarioLogado);
+                    psVerifica.setInt(2, idDestinatario);
+                    ResultSet rsVerifica = psVerifica.executeQuery();
+
+                    boolean jaExiste = false;
+                    if (rsVerifica.next()) {
+                        jaExiste = rsVerifica.getInt("total") > 0;
+                    }
+
+                    rsVerifica.close();
+                    psVerifica.close();
+
+                    if (!jaExiste) {
+                        // Adiciona o contato
+                        String queryInsert = "INSERT INTO Contatos (id_usuario, id_contato, bloqueado) VALUES (?, ?, ?)";
+                        PreparedStatement psInsert = conn.prepareStatement(queryInsert);
+                        psInsert.setInt(1, idUsuarioLogado);
+                        psInsert.setInt(2, idDestinatario);
+                        psInsert.setBoolean(3, false); // Não bloqueado por padrão
+
+                        int rowsAffected = psInsert.executeUpdate();
+                        psInsert.close();
+
+                        if (rowsAffected > 0) {
+                            runOnUiThread(() -> {
+                                jaEContato = true;
+                                btnAdicionarContato.setVisibility(View.GONE);
+                                Toast.makeText(ChatActivity.this, "Contato adicionado com sucesso!", Toast.LENGTH_SHORT).show();
+                            });
+                        } else {
+                            runOnUiThread(() -> {
+                                Toast.makeText(ChatActivity.this, "Erro ao adicionar contato", Toast.LENGTH_SHORT).show();
+                            });
+                        }
+                    } else {
+                        runOnUiThread(() -> {
+                            jaEContato = true;
+                            btnAdicionarContato.setVisibility(View.GONE);
+                            Toast.makeText(ChatActivity.this, "Este usuário já está em seus contatos", Toast.LENGTH_SHORT).show();
+                        });
+                    }
+
+                    conn.close();
+                } else {
+                    runOnUiThread(() -> {
+                        Toast.makeText(ChatActivity.this, "Erro de conexão com o banco de dados", Toast.LENGTH_SHORT).show();
+                    });
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                runOnUiThread(() -> {
+                    Toast.makeText(ChatActivity.this, "Erro ao adicionar contato: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+            }
+        }).start();
+    }
+
+
     private void abrirPerfilDestinatario() {
         Intent intent = new Intent(ChatActivity.this, ProfileActivity.class);
         intent.putExtra("USER_ID", idDestinatario);
         startActivity(intent);
     }
 
-    /**
-     * Carrega a foto de perfil do usuário a partir do banco de dados
-     * @param idUsuario ID do usuário cuja foto será carregada
-     */
+
     private void carregarFotoPerfil(int idUsuario) {
         new Thread(() -> {
             try {
@@ -225,20 +353,18 @@ public class ChatActivity extends AppCompatActivity {
         }).start();
     }
 
-    /**
-     * Carrega a imagem padrão como uma imagem circular
-     */
+
     private void carregarImagemPadrao() {
         runOnUiThread(() -> {
             try {
-                // Carrega o drawable padrão e converte para bitmap
+
                 Drawable drawable = getResources().getDrawable(R.drawable.ic_perfil_padrao);
                 Bitmap bitmap;
 
                 if (drawable instanceof BitmapDrawable) {
                     bitmap = ((BitmapDrawable) drawable).getBitmap();
                 } else {
-                    // Se não for BitmapDrawable, cria um novo bitmap e desenha o drawable nele
+
                     bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
                             drawable.getIntrinsicHeight(),
                             Bitmap.Config.ARGB_8888);
@@ -330,8 +456,7 @@ public class ChatActivity extends AppCompatActivity {
             return;
         }
 
-        // Adiciona visualmente antes de enviar ao banco (feedback imediato)
-        // Mostra a mensagem descriptografada na interface
+
         final Mensagem novaMensagem = new Mensagem(
                 0, // ID temporário
                 idUsuarioLogado,
@@ -432,6 +557,13 @@ public class ChatActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }).start();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Verifica novamente se é contato ao retornar para a tela
+        verificarSeJaEContato();
     }
 
     @Override
